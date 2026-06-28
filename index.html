@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THESIS DOCUMENTATION</title>
+    <style>
+        @font-face {
+            font-family: 'Unica77';
+            src: url('./Unica77.ttf') format('truetype');
+            font-weight: 100 900;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button,
+        a {
+            color: inherit;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        button {
+            appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        button:focus,
+        a:focus {
+            outline: none;
+        }
+
+        body {
+            font-family: 'Unica77', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #fff;
+            color: #000;
+            font-size: .8125rem;
+            line-height: 1.23077;
+        }
+
+        /* ── VIEWER PANEL (full screen) ── */
+        .viewer-panel {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        body.viewer-active .viewer-panel {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .viewer-panel img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            cursor: pointer;
+        }
+
+        /* ── GRID SIDE ── */
+        .grid-side {
+            padding: 0px 8px 8px 8px;
+
+            transition: opacity 0.15s ease;
+        }
+
+        body.viewer-active .grid-side {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ── TOP PANEL ── */
+        .top-panel {
+            padding-top: 0px;
+        }
+
+        .intro {
+            display: grid;
+            grid-template-columns: 24% 24% 24% 1fr;
+            gap: 24px;
+            padding: 48px 0 92px 4px;
+            /* padding-top: 36px; */
+        }
+
+        .intro-heading {
+            grid-column: 1 / -1/ 1;
+            font-size: 36px;
+            font-weight: 500;
+            padding: 6px 0;
+        }
+
+        .intro-block {
+            min-width: 0;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            /* background: #fff; */
+            background: none;
+        }
+
+        .site-title {
+            font-size: 54px;
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+            flex-shrink: 0;
+            background: none;
+            padding-top: 4px;
+            background: none;
+        }
+
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            /* gap: 5px; */
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .filters-label {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .filter-btn {
+            font-size: 54px;
+            font-weight: 500;
+            padding: 4px 12px 3px;
+            /* border: 1px solid #000; */
+            /* border-radius: 20px; */
+            /* background: #fff; */
+            background: none;
+            color: #000;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, opacity 0.15s;
+            line-height: 1;
+            white-space: nowrap;
+
+        }
+
+        .filter-btn:hover {
+            color: #5a5a5a;
+        }
+
+        .filter-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .filter-btn.active:hover{
+            background: #5a5a5a;
+        }
+
+        /* ── GALLERY ── */
+        .gallery {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            position: relative;
+            padding-bottom: 200px;
+        }
+
+        .date-group {
+            grid-column: 1 / -1;
+            margin-bottom: 116px;
+            margin-top: 24px;
+        }
+
+        .date-group.hidden {
+            display: none;
+        }
+
+
+        .date-label {
+            font-size: 18px;
+            font-weight: 500;
+            padding: 6px 0px 4px 0px;
+            position: sticky;
+            background: none;
+            z-index: 10;
+            color: #000000;
+            cursor: pointer;
+            transition: opacity 0.35s ease;
+            display: grid;
+            grid-template-columns: 40% 1fr;
+            align-items: baseline;
+        }
+
+        .date-label-period {
+            font-size: 18px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .date-sublabel {
+            font-size: 18px;
+            font-weight: 400;
+            color: #5a5a5a;
+            line-height: 1.2;
+            padding: 7px 0px 4px 0px;
+            align-self: baseline;
+        }
+
+        .date-label:hover {
+            color: #5a5a5a;
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 15px;
+            margin-left: 25.5%;
+        }
+
+        .work-card {
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: opacity 0.25s ease;
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.35s ease;
+        }
+
+        .work-card:hover img {
+            transform: scale(1.06);
+            border: 1px #000;
+        }
+
+        /* .date-grid:has(.work-card:hover) .work-card:not(:hover) {
+            opacity: 0.45;
+        } */
+
+        .work-card.selected {
+            outline: 2px solid #000;
+            outline-offset: -2px;
+        }
+
+        .grid-gap {
+            aspect-ratio: 1;
+        }
+
+        /* ── INTRO TEXT ── */
+        .intro-text {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #5a5a5a;
+            padding: 3px 0;
+        }
+
+        .intro-text-title {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #5a5a5a;
+            padding: 24px 0 6px;
+        }
+
+        /* ── DESCRIPTION TEXT ── */
+        .desc-text {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #5a5a5a;
+        }
+
+        .desc-float {
+            grid-column: 1 / -1;
+            height: 0;
+            overflow: visible;
+        }
+
+        .date-description {
+            width: 25%;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            white-space: pre-line;
+            background: #fff;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
+        }
+
+        .date-description.open {
+            max-height: 800px;
+            opacity: 1;
+            padding: 24px 0 36px 0;
+        }
+
+        .date-period-row {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            align-self: start;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 500;
+            padding: 6px 0px 6px 0px;
+            position: sticky;
+            background: rgb(255, 255, 255);
+            z-index: 10;
+            color: #000000;
+            width: fit-content;
+            cursor: pointer;
+        }
+
+
+
+        /* ── VIEWER BUTTONS ── */
+        .viewer-close,
+        .viewer-prev,
+        .viewer-next {
+            position: absolute;
+            color: #000;
+            z-index: 10;
+            padding: 10px;
+            display: flex;
+           
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewer-close:hover,
+        .viewer-prev:hover,
+        .viewer-next:hover {
+            color: #5a5a5a;
+        }
+
+        .viewer-close {
+            top: 8px;
+            right: 8px;
+        }
+
+        .viewer-prev {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 200px 100px 200px 12px;
+        }
+
+        .viewer-next {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 200px 12px 200px 100px;
+        }
+
+        .viewer-prev.disabled,
+        .viewer-next.disabled {
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* ── BOTTOM ── */
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 400;
+            /* opacity: 0.4; */
+            /* padding-left: 280px; */
+        }
+
+        /* ── SECTION LABELS (level 1 nav) ── */
+        .section-label {
+            font-size: 54px;
+            font-weight: 500;
+            padding: 4px 0 0px;
+            position: sticky;
+            top: 0;
+            /* background: #fff; */
+            background: none;
+            z-index: 12;
+            color: #000;
+            grid-column: 1 / -1;
+            width: fit-content;
+            line-height: 1;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .section-label:hover {
+            color: #5a5a5a;
+        }
+
+        /* PRACTICAL PART label row: title left, filters right */
+        .section-label-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Section wrappers — sticky labels are bounded to their own section */
+        .gallery-section {
+            grid-column: 1 / -1;
+            position: relative;
+            display: grid;
+            grid-template-columns: 25.5% 1fr;
+        }
+
+
+        /* chapter labels indented under section headers */
+        .date-label {
+            /* padding-left: 24px; */
+        }
+
+
+        /* ── SECTION BODY (shared 2-column layout: theory, practical) ── */
+        .section-body {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 24% 24%;
+            gap: 24px;
+
+            padding: 24px 0 116px 4px;
+        }
+
+        .section-block {
+            min-width: 0;
+        }
+
+        .theory-pdf {
+            display: block;
+
+            font-size: 54px;
+            color: #000;
+        }
+
+        .theory-pdf:hover {
+            color: #5a5a5a;
+        }
+
+        .content-btn {
+            font-size: 54px;
+            font-weight: 500;
+            line-height: 1;
+            cursor: pointer;
+            white-space: nowrap;
+            padding: 4px 0 3px;
+        }
+
+        .content-btn:hover {
+            color: #5a5a5a;
+        }
+
+        .content-nav-block {
+            min-width: 0;
+            /* padding-top: 12px; */
+        }
+
+        .impressium-text {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        .impressium-text.open {
+            max-height: 800px;
+            opacity: 1;
+        }
+
+        .content-nav-section {
+            font-size: 18px;
+            font-weight: 400;
+            color: #000000;
+            /* padding: 3px 0; */
+            cursor: pointer;
+            display: block;
+        }
+
+        .content-nav-section:hover {
+            color: #5a5a5a;
+        }
+
+        .content-nav-item {
+            font-size: 18px;
+            font-weight: 400;
+            color: #000000;
+            /* padding: 3px 0; */
+            cursor: pointer;
+            display: block;
+        }
+
+        .content-nav-item:hover {
+            color: #5a5a5a;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .date-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .site-title {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .date-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .viewer-panel {
+                padding: 16px;
+            }
+
+            .filters-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Full-screen viewer -->
+    <div class="viewer-panel" id="viewer-panel">
+        <button class="viewer-close" id="viewer-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.32 106.31" width="42" height="42" fill="currentColor"><polygon points="65.01 53.16 106.32 94.47 94.47 106.31 53.16 65 11.85 106.31 0 94.47 41.32 53.16 0 11.84 11.85 0 53.16 41.31 94.47 0 106.32 11.84 65.01 53.16"/></svg></button>
+        <button class="viewer-prev" id="viewer-prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor" style="transform:scaleX(-1)"><polygon points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15"/></svg></button>
+        <img id="viewer-img" src="" alt="">
+        <button class="viewer-next" id="viewer-next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor"><polygon points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15"/></svg></button>
+    </div>
+
+    <!-- Scrollable grid side -->
+    <div class="grid-side">
+
+        <div class="top-panel">
+            <div class="header-bar">
+                <span class="site-title">MOVEMENT IN STATIC DESIGN&nbsp;&nbsp;&nbsp;</span>
+                <button class="content-btn" id="content-btn">IMPRESSIUM</button>
+            </div>
+            <div class="intro">
+                <!-- <div class="intro-heading">Introduction</div> -->
+                <div class="intro-block">
+                    <div class="intro-text-title">Content</div>
+                    <div class="content-nav-block" id="content-nav-block"></div>
+                    <div class="intro-text">&nbsp;</div>
+                    <div class="intro-text">&nbsp;</div>
+                    <!-- <div class="intro-text">&nbsp;</div> -->
+                </div>
+                <div class="intro-block">
+                    <div class="intro-text-title">
+                        Introduction
+                    </div>
+                    <div class="intro-text">
+                        Static design is the shortest and purest form of visual communication. This project explores how
+                        movement can be expressed through it- using only simple geometric abstract shapes.
+                    </div>
+                </div>
+                <div class="intro-block">
+                    <div class="intro-text-title">
+                        Context
+                    </div>
+                    <div class="intro-text">
+                        This website is a documentation of the process behind "Movement in Static: A Graphic
+                        Interpretation"- the Practical Thesis
+                    </div>
+                </div>
+                <div class="intro-block">
+                    <div class="impressium-text" id="impressium-text">
+                        <div class="intro-text-title">Impressium</div>
+                        <div class="intro-text">
+                            Movement in Static: A Graphic Translation <br>
+                            BA Thesis 2026 <br>
+                            Visual Communication and Digital Spaces, FHNW HGK Basel<br>
+                            Specialization: Digital spaces<br>
+                            Concept and design: Mykyta Kramarenko<br>
+                            Mentors: Marion Fink, Kambiz Shafeei,<br>
+                            Software: Adobe Illustrator, indesign<br>
+                            Typeface:<br>
+                            Coding: Claude Code<br>
+                            © 2026 Mykyta Kramarenko / FHNW HGK Basel<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="gallery" id="gallery"></div>
+
+        <div class="bottom-bar">
+            <span>Thesis 2026</span>
+            <span>Mykyta Kramarenko — FHNW Basel</span>
+        </div>
+
+    </div>
+
+    <script>
+        // ── IMAGE GROUPS ──
+        // id: used for filter matching
+        // label: shown as section header in grid
+        // images: array of src paths
+        const GROUPS = [
+            {
+                id: '1. logos',
+                label: '1. Logos',
+                period: 'March 2026',
+                shortDesc: 'Stripping existing logos down to their pure movement.',
+                description: 'The theoretical thesis was built around logos — how they communicate dynamism through form. This became the natural starting point: what happens if you strip a logo down to only its movement? Remove the brand, the color, the name — and keep only the visual energy.\n\nThe experiments tried to find the threshold — how much can you simplify a logo before the movement disappears with the form? The context of specific logos kept pulling attention away from pure abstraction. That tension pushed the research toward a more abstract direction.',
+                images: [
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-164.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-165.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-166.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03-140.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03-145.jpg',
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-31.jpg',
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-32.jpg',
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-33.jpg',
+                ],
+                processImages: [
+                    // 'images/1./Documentation_scetches_thesis_5-16.03_2-.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-164.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-165.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03_2-166.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03-140.jpg',
+                    'images/1./Documentation_scetches_thesis_5-16.03-145.jpg',
+
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-31.jpg',
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-32.jpg',
+                    'images/1./Documentation_scetches_thesis_17-20.03-137-33.jpg',
+                ]
+            },
+            {
+                id: '2. pure-form',
+                label: '2. Pure Form',
+                period: 'March 2026',
+                shortDesc: 'Open exploration of lines, shapes, and typography without references.',
+                description: 'Without references or context, the research focused on three visual elements: lines, shapes, and typography. Each behaves differently when asked to communicate movement.\n\nLines through repetition naturally described rhythm and tempo simultaneously — functioning as both form and pattern. The interaction between lines and shapes became its own research question: which dominates, which supports, how do they create or contradict each other. The drawings in this period had no clear structure. It was open exploration.',
+                images: [
+                    ...[24, 25, 26, 27, 28, 29, 30, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48].map(n =>
+                        `images/2./Documentation_scetches_thesis_17-20.03-137-${n}.jpg`),
+                    ...[100, 101, 103, 104, 105, 106, 107, 108, 109, 110].map(n =>
+                        `images/2./Documentation_scetches_thesis_17-20.03-137-${n}.jpg`),
+                    null,
+                    ...[48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 64, 65].map(n =>
+                        `images/2./Documentation_scetches_thesis_1.05-${String(n).padStart(2, '0')}.jpg`),
+                    null,
+                    ...Array.from({ length: 16 }, (_, i) => i + 1).map(n =>
+                        `images/2./Documentation_scetches_thesis_1505-${String(n).padStart(2, '0')}.jpg`),
+                ],
+                processImages: [
+                    ...[24, 25, 26, 27, 28, 29, 30, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                        49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72,
+                        73, 74, 75, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 95, 96,
+                        97, 98, 99, 103, 104, 105, 106, 107, 108, 109, 110].map(n =>
+                            `images/2./Documentation_scetches_thesis_17-20.03-137-${n}.jpg`),
+                    'images/2./Documentation_scetches_thesis_28.04-137-25-37.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-41.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-42.jpg',
+
+                    ...[48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 64, 65].map(n =>
+                        `images/2./Documentation_scetches_thesis_1.05-${n}.jpg`),
+
+                    ...Array.from({ length: 16 }, (_, i) => i + 1).map(n =>
+                        `images/2./Documentation_scetches_thesis_1505-${String(n).padStart(2, '0')}.jpg`),
+
+                ]
+            },
+            {
+                id: '3. Sequences',
+                label: '3. Sequences',
+                period: 'April–May 2026',
+                shortDesc: 'Experimenting with different amounts of frames to see how movement can be told.',
+                description: 'A single image was not enough. The question became: what is the minimum number of images needed to communicate movement convincingly?\n\nThe research moved into series — 10 to 12 frames, then reduced to 5, then to 2, then to 1. Each reduction forced clarity. When one image became sufficient — when the graphic could stand alone — the visual language was working.',
+                images: [
+                    // 17-20.03 series
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-89.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-90.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-91.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-92.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-93.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-94.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-100.jpg',
+                    'images/2./Documentation_scetches_thesis_17-20.03-137-101.jpg',
+                    null,
+                    'images/3./Documentation_scetches_thesis_1.05-58.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-59.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-60.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-61.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-62.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-63.jpg',
+                    // 1505 series
+                    null,
+                    'images/3./Documentation_scetches_thesis_1505-17.jpg',
+                    'images/3./Documentation_scetches_thesis_1505-18.jpg',
+                    'images/3./Documentation_scetches_thesis_1505-19.jpg',
+                    'images/3./Documentation_scetches_thesis_1505-20.jpg',
+                    'images/3./Documentation_scetches_thesis_1505-21.jpg',
+                    'images/3./Documentation_scetches_thesis_1505-22.jpg',
+                    null,
+                    // 28.04 series
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-01.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-02.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-03.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-04.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-05.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-06.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-07.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-09.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-10.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-11.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-12.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-13.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-14.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-15.jpg',
+                    null,
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-16.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-17.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-18.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-19.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-20.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-21.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-22.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-23.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-24.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-25.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-26.jpg',
+                    null,
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-27.jpg',
+
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-28.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-29.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-30.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-31.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-32.jpg',
+                    null,
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-33.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-34.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-35.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-36.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-38.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-39.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-40.jpg',
+                    null,
+
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-43.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-44.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-45.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-46.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-47.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-48.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-49.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-50.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-51.jpg',
+                    null,
+
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-53.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-54.jpg',
+
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-55.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-56.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-57.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-58.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-59.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-60.jpg',
+                    'images/3./Documentation_scetches_thesis_28.04-137-25-61.jpg',
+                    null,
+                    // 1.05 series
+                    'images/3./Documentation_scetches_thesis_1.05-01.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-02.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-03.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-04.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-05.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-06.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-07.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-08.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-09.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-10.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-11.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-12.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-13.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-14.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-15.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-16.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-17.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-18.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-19.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-20.jpg',
+
+                    'images/3./Documentation_scetches_thesis_1.05-21.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-22.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-23.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-24.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-25.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-26.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-27.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-28.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-29.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-30.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-31.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-32.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-33.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-34.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-35.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-36.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-37.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-38.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-39.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-40.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-41.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-42.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-43.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-44.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-45.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-46.jpg',
+                    'images/3./Documentation_scetches_thesis_1.05-47.jpg',
+
+                ]
+            },
+            {
+                id: '4. Translation',
+                label: '4. Translation',
+                period: 'May–June 2026',
+                shortDesc: 'Translating real video footage into abstract graphic layers.',
+                description: 'After a long period without specific content, real video footage became the source material. The goal was to decompose each video into abstract graphic layers and keep only the movement itself.\n\nThe first videos were simple: a jumping frog, a car. The approach was to separate movement into distinct layers — object movement, speed, camera behavior — present each separately, then combined. Some translations were too abstract to read. Others were immediately clear. Finding the threshold between the two became the central question.',
+                images: [
+                    ...[...Array.from({ length: 15 }, (_, i) => i + 1),
+                    ...Array.from({ length: 22 }, (_, i) => i + 17).filter(n => n !== 33)].map(n =>
+                        `images/4./Documentation_scetches_thesis_7.05-${String(n).padStart(2, '0')}.jpg`),
+
+                    ...Array.from({ length: 22 }, (_, i) => i + 1).map(n =>
+                        `images/4./Documentation_scetches_thesis_1-14.06-${String(n).padStart(2, '0')}.jpg`),
+                ]
+            },
+            // {
+            //     id: '5. Final-works',
+            //     label: '5. Final Works',
+            //     period: 'May–June 2026',
+            //     description: 'From all experiments, the strongest translations were selected. The criterion was not objective accuracy but communicative clarity — whether the graphic could convey the character of the movement.\n\nThe final works are personal interpretations. The viewer first encounters the graphic, forms their own reading, and then sees the original footage. That gap — between interpretation and original — is where the project lives.',
+            //     images: [
+
+            //     ]
+            // }
+        ];
+
+        // ── BUILD GALLERY ──
+        const gallery = document.getElementById('gallery');
+        const viewerPanel = document.getElementById('viewer-panel');
+        const viewerImg = document.getElementById('viewer-img');
+        let activeCard = null;
+
+        function toThumb(src) {
+            return 'thumbs_new/' + src.split('/').pop();
+        }
+
+        // ── SECTION HEADERS ──
+        const theoreticalLabel = document.createElement('div');
+        theoreticalLabel.className = 'section-label section-label-bar';
+        theoreticalLabel.innerHTML = `<span>ABOUT THE PROJECT</span><a href="#" class="">REF ↗</a>`;
+
+        const theorySectionEl = document.createElement('div');
+        theorySectionEl.className = 'section-body';
+        theorySectionEl.innerHTML = `
+            <div class="section-block">
+                       <div class="intro-text-title">Motivation</div>
+                        <div class="intro-text">For the last five years I worked extensively with animation, film, and digital tools. Movement, change, and dynamism have always fascinated me. But animation is a complex medium with many limitations. That was the reason I decided to explore movement through graphic design instead- a universal and direct form of communication. I wanted to take the energy from motion design and compress it into the most reduced visual language possible. Static design works on every medium, requires no screen time, no interaction. The question was whether that short form could carry something as complex as movement</div>
+                        
+                    </div>
+                    <div class="section-block">
+                        <div class="intro-text-title">Limitations</div>
+                        <div class="intro-text">This topic could have been explored in many different ways. To maintain a more systematic approach, it was important to define clear limitations. All work was created digitally in Adobe Illustrator- no manual drawing. Color, illustration, photography, and any form of animation were deliberately excluded. The focus was placed exclusively on abstract movement- no real objects, no environments, no context. Only the motion itself, translated into the simplest possible geometric forms. The goal was not data visualization or an objective record, but a personal graphic interpretation. Someone else would translate the same footage differently. That subjectivity is part of the project.</div>
+
+                    </div>
+        `;
+
+        // Wrap theory content so its sticky label is bounded to this section only
+        const theoryWrapper = document.createElement('div');
+        theoryWrapper.className = 'gallery-section';
+        theoryWrapper.appendChild(theoreticalLabel);
+        theoryWrapper.appendChild(theorySectionEl);
+        gallery.appendChild(theoryWrapper);
+
+        let practicalLabel, practicalBodyEl;
+        const chapterLabels = [];
+        const chapterAnchors = [];
+
+        // Wrap practical content the same way — label unsticks when this section ends
+        const practicalWrapper = document.createElement('div');
+        practicalWrapper.className = 'gallery-section';
+
+        GROUPS.forEach((group, idx) => {
+            // Insert PRACTICAL PART section header before the first chapter
+            if (idx === 0) {
+                practicalLabel = document.createElement('div');
+                practicalLabel.className = 'section-label section-label-bar';
+                practicalLabel.innerHTML = `
+                    <span>PROCESS</span> 
+                    <div class="filters-bar">
+                        <button class="filter-btn" data-cols="5">5</button>
+                        <button class="filter-btn active" data-cols="10">10</button>
+                        <button class="filter-btn" data-cols="15">15</button>
+                        <button class="filter-btn" data-cols="20">20</button>
+                        <button class="filter-btn" data-cols="25">25</button>
+                    </div>`;
+                practicalWrapper.appendChild(practicalLabel);
+
+                practicalBodyEl = document.createElement('div');
+                practicalBodyEl.className = 'section-body';
+                practicalBodyEl.innerHTML = `
+                    <div class="section-block">
+                       <div class="intro-text-title">Process overview</div>
+                        <div class="intro-text">The research moved through four distinct phases. It started with logos, analyzing how existing marks communicate movement, trying to strip them down to only their visual energy. This quickly led to a more abstract direction: free experiments with lines, shapes, and typography, without any references or context. From there the focus shifted to sequences- how many images does it take to communicate movement convincingly? Starting with 10 to 12 frames, reducing to 2, then to 1. When a single image could stand alone, the visual language was working. The final phase introduced real video footage as source material- decomposing each video into abstract graphic layers, keeping only the movement itself.</div>
+                       
+                        
+                    </div>
+                    <div class="section-block">
+                        <div class="intro-text-title">Timeline</div>
+                        <div class="intro-text">The research began in March 2026 with logos- analyzing how existing marks communicate movement through form. Through March and April the focus shifted to free experimentation with lines, shapes, and typography, without any references or context. In April and May the research moved into sequences- finding the minimum number of images needed to communicate movement convincingly. From May through June the approach became translation: taking real video footage and interpreting it as a single static graphic image.</div>
+                      
+                `;
+                practicalWrapper.appendChild(practicalBodyEl);
+            }
+
+            const label = document.createElement('div');
+            label.className = 'date-label';
+            const labelText = document.createElement('span');
+            labelText.textContent = group.label;
+            label.appendChild(labelText);
+            if (group.period) {
+                const periodSpan = document.createElement('span');
+                periodSpan.className = 'date-label-period';
+                periodSpan.textContent = group.period;
+                label.appendChild(periodSpan);
+            }
+            practicalWrapper.appendChild(label);
+
+            if (group.shortDesc) {
+                const sublabel = document.createElement('div');
+                sublabel.className = 'date-sublabel';
+                sublabel.textContent = group.shortDesc;
+                practicalWrapper.appendChild(sublabel);
+            }
+
+            const scrollAnchor = document.createElement('div');
+            practicalWrapper.appendChild(scrollAnchor);
+
+            const groupEl = document.createElement('div');
+            groupEl.className = 'date-group';
+            groupEl.dataset.id = group.id;
+
+            chapterLabels.push(label);
+            chapterAnchors.push(scrollAnchor);
+
+            label.addEventListener('click', () => {
+                const stickyBottom = parseInt(label.style.top) + label.offsetHeight;
+                const blockAbsTop = scrollAnchor.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+            });
+
+            const grid = document.createElement('div');
+            grid.className = 'date-grid';
+
+            (group.processImages || group.images).forEach(src => {
+                if (src === null) {
+                    const gap = document.createElement('div');
+                    gap.className = 'grid-gap';
+                    grid.appendChild(gap);
+                    return;
+                }
+                const card = document.createElement('article');
+                card.className = 'work-card';
+                card.dataset.fullSrc = src;
+
+                const img = document.createElement('img');
+                img.src = toThumb(src);
+                img.loading = 'lazy';
+                img.draggable = false;
+                card.appendChild(img);
+                grid.appendChild(card);
+
+                card.addEventListener('click', () => handleCardClick(card));
+            });
+
+            groupEl.appendChild(grid);
+            practicalWrapper.appendChild(groupEl);
+        });
+
+        gallery.appendChild(practicalWrapper);
+
+        // ── FINAL RESULT SECTION ──
+        const finalWrapper = document.createElement('div');
+        finalWrapper.className = 'gallery-section';
+
+        const finalLabel = document.createElement('div');
+        finalLabel.className = 'section-label section-label-bar';
+        finalLabel.innerHTML = `<span>FINAL RESULT</span>
+                    <div class="filters-bar">
+                        <button class="filter-btn" data-cols="6">6</button>
+                        <button class="filter-btn active" data-cols="12">12</button>
+                        <button class="filter-btn" data-cols="18">18</button>
+                    </div>`;
+
+        finalWrapper.appendChild(finalLabel);
+
+        const finalBodyEl = document.createElement('div');
+        finalBodyEl.className = 'section-body';
+        finalBodyEl.innerHTML = `
+            <div class="section-block">
+               <div class="intro-text-title">Final Concept</div>
+                <div class="intro-text">The final result is a personal graphic interpretation of movement- stripped of everything video contains: color, sound, environment, visual noise. Each footage is translated into a single static image using only simple geometric shapes. No context, no objectivity. Just movement, as I see it.</div>
+            </div>
+            <div class="section-block">
+                <div class="intro-text-title">Outcome</div>
+                <div class="intro-text">The work is presented as a book- a collection of video footages and their graphic translations. Each footage exists as a single static image. The graphics and the original videos are kept separate- first you see the interpretation, then the source. Together they form a complete picture.</div>
+            </div>
+        `;
+        finalWrapper.appendChild(finalBodyEl);
+
+        const finalLabel1 = document.createElement('div');
+        finalLabel1.className = 'date-label';
+        const finalLabelText1 = document.createElement('span');
+        finalLabelText1.textContent = '1. Final graphics';
+        finalLabel1.appendChild(finalLabelText1);
+        finalWrapper.appendChild(finalLabel1);
+
+        const finalSublabel1 = document.createElement('div');
+        finalSublabel1.className = 'date-sublabel';
+        finalSublabel1.textContent = 'Final selection of graphics';
+        finalWrapper.appendChild(finalSublabel1);
+
+        const finalAnchor1 = document.createElement('div');
+        finalWrapper.appendChild(finalAnchor1);
+
+        const finalGroup1 = document.createElement('div');
+        finalGroup1.className = 'date-group';
+        finalGroup1.dataset.id = '1. Final graphics';
+        const finalGrid1 = document.createElement('div');
+        finalGrid1.className = 'date-grid';
+        [
+            'images/5./Documentation_scetches_thesis_Final-01.jpg',
+            'images/5./Documentation_scetches_thesis_Final-02.jpg',
+            'images/5./Documentation_scetches_thesis_Final-03.jpg',
+            'images/5./Documentation_scetches_thesis_Final-04.jpg',
+            'images/5./Documentation_scetches_thesis_Final-05.jpg',
+            'images/5./Documentation_scetches_thesis_Final-06.jpg',
+            'images/5./Documentation_scetches_thesis_Final-07.jpg',
+            'images/5./Documentation_scetches_thesis_Final-08.jpg',
+            'images/5./Documentation_scetches_thesis_Final-09.jpg',
+            'images/5./Documentation_scetches_thesis_Final-10.jpg',
+            'images/5./Documentation_scetches_thesis_Final-11.jpg',
+            'images/5./Documentation_scetches_thesis_Final-12.jpg',
+        ].forEach(src => {
+            const card = document.createElement('article');
+            card.className = 'work-card';
+            card.dataset.fullSrc = src;
+            const img = document.createElement('img');
+            img.src = toThumb(src);
+            img.loading = 'lazy';
+            img.draggable = false;
+            card.appendChild(img);
+            finalGrid1.appendChild(card);
+            card.addEventListener('click', () => handleCardClick(card));
+        });
+        finalGroup1.appendChild(finalGrid1);
+        finalWrapper.appendChild(finalGroup1);
+        finalLabel1.addEventListener('click', () => {
+            const stickyBottom = parseInt(finalLabel1.style.top) + finalLabel1.offsetHeight;
+            const blockAbsTop = finalAnchor1.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+        });
+
+        const finalLabel2 = document.createElement('div');
+        finalLabel2.className = 'date-label';
+        const finalLabelText2 = document.createElement('span');
+        finalLabelText2.textContent = '2. Footages';
+        finalLabel2.appendChild(finalLabelText2);
+        finalWrapper.appendChild(finalLabel2);
+
+        const finalSublabel2 = document.createElement('div');
+        finalSublabel2.className = 'date-sublabel';
+        finalSublabel2.textContent = 'Something different';
+        finalWrapper.appendChild(finalSublabel2);
+
+        const finalAnchor2 = document.createElement('div');
+        finalWrapper.appendChild(finalAnchor2);
+
+        const finalGroup2 = document.createElement('div');
+        finalGroup2.className = 'date-group';
+        finalGroup2.dataset.id = '2. pure-form';
+        const finalGrid2 = document.createElement('div');
+        finalGrid2.className = 'date-grid';
+        GROUPS[1].images.forEach(src => {
+            if (src === null) {
+                const gap = document.createElement('div');
+                gap.className = 'grid-gap';
+                finalGrid2.appendChild(gap);
+                return;
+            }
+            const card = document.createElement('article');
+            card.className = 'work-card';
+            card.dataset.fullSrc = src;
+            const img = document.createElement('img');
+            img.src = toThumb(src);
+            img.loading = 'lazy';
+            img.draggable = false;
+            card.appendChild(img);
+            finalGrid2.appendChild(card);
+            card.addEventListener('click', () => handleCardClick(card));
+        });
+        finalGroup2.appendChild(finalGrid2);
+        finalWrapper.appendChild(finalGroup2);
+        finalLabel2.addEventListener('click', () => {
+            const stickyBottom = parseInt(finalLabel2.style.top) + finalLabel2.offsetHeight;
+            const blockAbsTop = finalAnchor2.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+        });
+
+        gallery.appendChild(finalWrapper);
+
+        // ── FINAL RESULT STICKY NAV (same logic as PROCESS, independent) ──
+        const finalNavLabels = [finalLabel1, finalLabel2];
+        const finalNavAnchors = [finalGroup1, finalGroup2];
+        const finalNavHeights = [];
+        const finalLabelTargets = [];
+        let finalSectionH = 0;
+        let finalTRAVEL = 0;
+        let finalEntryScrollY = null;
+
+        requestAnimationFrame(() => {
+            finalSectionH = finalLabel.getBoundingClientRect().height;
+            let ftop = finalSectionH - 1;
+            finalNavLabels.forEach((el, i) => {
+                finalNavHeights[i] = el.getBoundingClientRect().height;
+                el.style.top = ftop + 'px';
+                ftop += finalNavHeights[i] - 1;
+            });
+            finalNavLabels.forEach((el, i) => {
+                let t = 0;
+                for (let j = i + 1; j < finalNavLabels.length; j++) t += (finalNavHeights[j] || 0) - 1;
+                finalLabelTargets[i] = t;
+            });
+            finalTRAVEL = (finalLabelTargets[0] || 0) + (finalNavHeights[0] || 48);
+            finalNavLabels.forEach((el, i) => {
+                el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
+            });
+            finalLabel.querySelector('span').addEventListener('click', () => {
+                const targetTop = finalBodyEl.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: targetTop - finalSectionH, behavior: 'smooth' });
+            });
+            updateFinalNav();
+        });
+
+        function updateFinalNav() {
+            const chaptersVisible = finalNavLabels.length > 0 &&
+                finalNavLabels[0].getBoundingClientRect().top <= window.innerHeight;
+            if (!chaptersVisible) {
+                finalEntryScrollY = null;
+                finalNavLabels.forEach((el, i) => {
+                    el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
+                });
+                return;
+            }
+            if (finalEntryScrollY === null) finalEntryScrollY = window.scrollY;
+            const scrolled = window.scrollY - finalEntryScrollY;
+            let currentIndex = -1;
+            finalNavAnchors.forEach((anchor, i) => {
+                if (anchor.getBoundingClientRect().top <= window.innerHeight / 2) currentIndex = i;
+            });
+            finalNavLabels.forEach((el, i) => {
+                if (i <= currentIndex) {
+                    el.style.bottom = '';
+                } else {
+                    el.style.bottom = Math.min(finalLabelTargets[i] - finalTRAVEL + scrolled, finalLabelTargets[i]) + 'px';
+                }
+            });
+        }
+        window.addEventListener('scroll', updateFinalNav, { passive: true });
+
+        // ── VIEWER ──
+        const viewerClose = document.getElementById('viewer-close');
+        const viewerPrev = document.getElementById('viewer-prev');
+        const viewerNext = document.getElementById('viewer-next');
+        const allCards = [...document.querySelectorAll('.work-card')];
+        let currentCardIndex = -1;
+
+        function handleCardClick(card) {
+            if (card === activeCard) { closeViewer(); return; }
+            openViewer(card);
+        }
+
+        function openViewer(card) {
+            if (activeCard) activeCard.classList.remove('selected');
+            activeCard = card;
+            currentCardIndex = allCards.indexOf(card);
+            card.classList.add('selected');
+            loadImage(card);
+            document.body.classList.add('viewer-active');
+            updateViewerButtons();
+        }
+
+        function loadImage(card) {
+            viewerImg.src = card.dataset.fullSrc;
+        }
+
+        function goTo(delta) {
+            const next = currentCardIndex + delta;
+            if (next < 0 || next >= allCards.length) return;
+            openViewer(allCards[next]);
+        }
+
+        function updateViewerButtons() {
+            viewerPrev.classList.toggle('disabled', currentCardIndex <= 0);
+            viewerNext.classList.toggle('disabled', currentCardIndex >= allCards.length - 1);
+        }
+
+        function closeViewer() {
+            if (activeCard) activeCard.classList.remove('selected');
+            activeCard = null;
+            document.body.classList.remove('viewer-active');
+        }
+
+        // Background click closes, button clicks don't bubble up
+        viewerPanel.addEventListener('click', e => {
+            if (e.target === viewerPanel) closeViewer();
+        });
+        viewerClose.addEventListener('click', e => { e.stopPropagation(); closeViewer(); });
+        viewerPrev.addEventListener('click', e => { e.stopPropagation(); goTo(-1); });
+        viewerNext.addEventListener('click', e => { e.stopPropagation(); goTo(1); });
+
+        // Keyboard
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeViewer();
+            if (e.key === 'ArrowLeft') goTo(-1);
+            if (e.key === 'ArrowRight') goTo(1);
+        });
+
+        // ── GRID SIZE ──
+        practicalWrapper.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                practicalWrapper.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const n = parseInt(btn.dataset.cols);
+                practicalWrapper.querySelectorAll('.date-grid').forEach(g => g.style.gridTemplateColumns = `repeat(${n}, 1fr)`);
+            });
+        });
+        practicalWrapper.querySelectorAll('.date-grid').forEach(g => g.style.gridTemplateColumns = `repeat(10, 1fr)`);
+
+        finalWrapper.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                finalWrapper.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const n = parseInt(btn.dataset.cols);
+                finalWrapper.querySelectorAll('.date-grid').forEach(g => g.style.gridTemplateColumns = `repeat(${n}, 1fr)`);
+            });
+        });
+        finalWrapper.querySelectorAll('.date-grid').forEach(g => g.style.gridTemplateColumns = `repeat(12, 1fr)`);
+
+        // ── CHAPTER LABEL STICKY NAV ──
+        // Section labels (THEORETICAL PART, PRACTICAL PART, site title) use pure CSS sticky top:0
+        // and naturally cover each other as you scroll — only the latest one is visible.
+        // Chapter labels stack below the active section label via JS top/bottom positioning.
+        const navHeights = [];
+        const naturalTops = [];
+        const labelTargets = [];
+        let sectionH = 0;
+        let TRAVEL = 0;
+        let entryScrollY = null;
+
+        requestAnimationFrame(() => {
+            sectionH = theoreticalLabel.getBoundingClientRect().height;
+            let top = sectionH - 1;
+            chapterLabels.forEach((el, i) => {
+                navHeights[i] = el.getBoundingClientRect().height;
+                naturalTops[i] = top;
+                el.style.top = top + 'px';
+                top += navHeights[i] - 1;
+            });
+
+            // Compute each label's final bottom target
+            chapterLabels.forEach((el, i) => {
+                let t = 0;
+                for (let j = i + 1; j < chapterLabels.length; j++) t += (navHeights[j] || 0) - 1;
+                labelTargets[i] = t;
+            });
+            // All labels travel the same distance so spacing stays constant (no overlap)
+            TRAVEL = (labelTargets[0] || 0) + (navHeights[0] || 48) + 0;
+            chapterLabels.forEach((el, i) => {
+                el.style.bottom = (labelTargets[i] - TRAVEL) + 'px';
+            });
+
+            // Click section labels to scroll to their content
+            theoreticalLabel.querySelector('span').addEventListener('click', () => {
+                const targetTop = theorySectionEl.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: targetTop - sectionH, behavior: 'smooth' });
+            });
+            practicalLabel.querySelector('span').addEventListener('click', () => {
+                const targetTop = practicalBodyEl.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: targetTop - sectionH, behavior: 'smooth' });
+            });
+
+            updateNav();
+        });
+
+        function updateNav() {
+            // Trigger when 1. Logos enters the viewport from below
+            const chaptersVisible = chapterLabels.length > 0 &&
+                chapterLabels[0].getBoundingClientRect().top <= window.innerHeight;
+
+            if (!chaptersVisible) {
+                entryScrollY = null;
+                chapterLabels.forEach((el, i) => {
+                    el.style.top = naturalTops[i] + 'px';
+                    el.style.bottom = (labelTargets[i] - TRAVEL) + 'px';
+                });
+                return;
+            }
+
+            // EXIT: when practicalWrapper bottom is inside the stacked label zone,
+            // slide all labels off together maintaining their spacing (same goose-file as entry)
+            const wrapperBottom = practicalWrapper.getBoundingClientRect().bottom;
+            const totalLabelH = navHeights.reduce((s, h) => s + h, 0);
+            if (wrapperBottom < sectionH + totalLabelH) {
+                let exitTop = wrapperBottom;
+                for (let i = chapterLabels.length - 1; i >= 0; i--) {
+                    exitTop -= navHeights[i];
+                    chapterLabels[i].style.top = exitTop + 'px';
+                    chapterLabels[i].style.bottom = '';
+                }
+                return;
+            }
+
+            // Restore natural tops in case we just left exit zone (scrolling back up)
+            chapterLabels.forEach((el, i) => {
+                el.style.top = naturalTops[i] + 'px';
+            });
+
+            if (entryScrollY === null) entryScrollY = window.scrollY;
+            const scrolled = window.scrollY - entryScrollY;
+
+            let currentIndex = -1;
+            chapterAnchors.forEach((anchor, i) => {
+                if (anchor.getBoundingClientRect().top <= window.innerHeight / 2) currentIndex = i;
+            });
+
+            chapterLabels.forEach((el, i) => {
+                if (i <= currentIndex) {
+                    el.style.bottom = '';
+                } else {
+                    // All labels move 1px per scroll px, same travel = constant spacing throughout
+                    el.style.bottom = Math.min(labelTargets[i] - TRAVEL + scrolled, labelTargets[i]) + 'px';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateNav, { passive: true });
+
+        // ── CONTENT NAV ──
+        const contentNavBlock = document.getElementById('content-nav-block');
+        const contentBtn = document.getElementById('content-btn');
+        const impressiumText = document.getElementById('impressium-text');
+
+        const scrollToEl = (labelEl, anchorEl) => {
+            const offset = parseInt(labelEl.style.top || '0') + labelEl.offsetHeight;
+            const top = anchorEl.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        };
+
+        const navSections = [
+            { label: 'About the project', labelEl: theoreticalLabel, anchorEl: theorySectionEl },
+            { label: 'Process', labelEl: practicalLabel, anchorEl: practicalBodyEl },
+        ];
+        GROUPS.forEach((g, i) => navSections.push({
+            label: g.label, labelEl: chapterLabels[i], anchorEl: chapterAnchors[i], indent: true
+        }));
+        navSections.push({ label: 'Final result', labelEl: finalLabel, anchorEl: finalBodyEl });
+        navSections.push({ label: '1.    Final graphics', labelEl: finalNavLabels[0], anchorEl: finalAnchor1, indent: true });
+        navSections.push({ label: '2.    Footages', labelEl: finalNavLabels[1], anchorEl: finalAnchor2, indent: true });
+
+        navSections.forEach(({ label, labelEl, anchorEl, indent }) => {
+            const item = document.createElement('button');
+            item.className = indent ? 'content-nav-item' : 'content-nav-section';
+            item.textContent = label;
+            item.addEventListener('click', () => scrollToEl(labelEl, anchorEl));
+            contentNavBlock.appendChild(item);
+        });
+
+        contentBtn.addEventListener('click', () => {
+            impressiumText.classList.toggle('open');
+        });
+    </script>
+</body>
+
+</html>
