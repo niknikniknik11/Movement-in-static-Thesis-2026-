@@ -50,7 +50,7 @@
             background: #fff;
             color: #000;
             font-size: .8125rem;
-            line-height: 1.23077;
+            line-height: 1.3;
         }
 
         /* ── VIEWER PANEL (full screen) ── */
@@ -230,7 +230,7 @@
             font-size: 18px;
             font-weight: 92;
             color: #5a5a5a;
-            line-height: 1.2;
+            line-height: 1.3;
             padding: 7px 0px 4px 0px;
             align-self: baseline;
         }
@@ -284,7 +284,7 @@
         /* ── INTRO TEXT ── */
         .intro-text {
             font-size: 18px;
-            font-weight: 92;
+            font-weight: 100;
             line-height: 1.3;
             color: #5a5a5a;
             padding: 3px 0;
@@ -292,8 +292,8 @@
 
         .intro-text-title {
             font-size: 18px;
-            font-weight: 92;
-            line-height: 1.2;
+            font-weight: 100;
+            line-height: 1.3;
             color: #5a5a5a;
             padding: 24px 0 12px;
         }
@@ -301,8 +301,8 @@
         /* ── DESCRIPTION TEXT ── */
         .desc-text {
             font-size: 18px;
-            font-weight: 92;
-            line-height: 1.2;
+            font-weight: 100;
+            line-height: 1.3;
             color: #5a5a5a;
         }
 
@@ -507,8 +507,9 @@
         .content-nav-section {
             font-size: 18px;
             font-weight: 92;
+            line-height: 1.3;
             color: #000000;
-            padding: 2px 0;
+            padding: 1px 0px 0px 0px;
             cursor: pointer;
             display: block;
         }
@@ -520,8 +521,9 @@
         .content-nav-item {
             font-size: 18px;
             font-weight: 92;
+            line-height: 1.3;
             color: #000000;
-            padding: 2px 0;
+            padding: 1px 0;
             cursor: pointer;
             display: block;
         }
@@ -972,12 +974,6 @@
             const labelText = document.createElement('span');
             labelText.textContent = group.label;
             label.appendChild(labelText);
-            if (group.period) {
-                const periodSpan = document.createElement('span');
-                periodSpan.className = 'date-label-period';
-                periodSpan.textContent = group.period;
-                label.appendChild(periodSpan);
-            }
             practicalWrapper.appendChild(label);
 
             if (group.shortDesc) {
