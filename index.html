@@ -73,7 +73,8 @@
             pointer-events: auto;
         }
 
-        .viewer-panel img {
+        .viewer-panel img,
+        .viewer-panel video {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
@@ -109,7 +110,7 @@
         .intro-heading {
             grid-column: 1 / -1/ 1;
             font-size: 36px;
-            font-weight: 110;
+            font-weight: 100;
             padding: 6px 0;
         }
 
@@ -132,7 +133,7 @@
 
         .site-title {
             font-size: 54px;
-            font-weight: 110;
+            font-weight: 100;
             line-height: 1;
             white-space: nowrap;
             flex-shrink: 0;
@@ -151,7 +152,7 @@
 
         .filters-label {
             font-size: 18px;
-            font-weight: 110;
+            font-weight: 100;
             line-height: 1;
             white-space: nowrap;
             flex-shrink: 0;
@@ -183,7 +184,7 @@
             color: #fff;
         }
 
-        .filter-btn.active:hover{
+        .filter-btn.active:hover {
             background: #5a5a5a;
         }
 
@@ -256,18 +257,18 @@
             transition: opacity 0.25s ease;
         }
 
-        .work-card img {
+        .work-card img,
+        .work-card video {
             width: 100%;
             height: 100%;
             display: block;
             object-fit: cover;
             object-position: center;
-            transition: transform 0.35s ease;
         }
 
-        .work-card:hover img {
-            transform: scale(1.06);
-            border: 1px #000;
+        .work-card:hover {
+            outline: 1px solid #000;
+            outline-offset: -1px;
         }
 
         /* .date-grid:has(.work-card:hover) .work-card:not(:hover) {
@@ -360,7 +361,7 @@
             z-index: 10;
             padding: 10px;
             display: flex;
-           
+
             align-items: center;
             justify-content: center;
         }
@@ -569,10 +570,24 @@
 
     <!-- Full-screen viewer -->
     <div class="viewer-panel" id="viewer-panel">
-        <button class="viewer-close" id="viewer-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.32 106.31" width="42" height="42" fill="currentColor"><polygon points="65.01 53.16 106.32 94.47 94.47 106.31 53.16 65 11.85 106.31 0 94.47 41.32 53.16 0 11.84 11.85 0 53.16 41.31 94.47 0 106.32 11.84 65.01 53.16"/></svg></button>
-        <button class="viewer-prev" id="viewer-prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor" style="transform:scaleX(-1)"><polygon points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15"/></svg></button>
+        <button class="viewer-close" id="viewer-close"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 106.32 106.31" width="42" height="42" fill="currentColor">
+                <polygon
+                    points="65.01 53.16 106.32 94.47 94.47 106.31 53.16 65 11.85 106.31 0 94.47 41.32 53.16 0 11.84 11.85 0 53.16 41.31 94.47 0 106.32 11.84 65.01 53.16" />
+            </svg></button>
+        <button class="viewer-prev" id="viewer-prev"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor"
+                style="transform:scaleX(-1)">
+                <polygon
+                    points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15" />
+            </svg></button>
         <img id="viewer-img" src="" alt="">
-        <button class="viewer-next" id="viewer-next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor"><polygon points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15"/></svg></button>
+        <video id="viewer-video" muted loop playsinline style="display:none"></video>
+        <button class="viewer-next" id="viewer-next"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="157.98 0 146.07 106.31" width="60" height="44" fill="currentColor">
+                <polygon
+                    points="304.05 53.15 254.14 103.08 230.49 103.08 272.03 61.52 157.98 61.52 157.98 44.78 272.03 44.78 230.49 3.23 254.14 3.23 304.05 53.15" />
+            </svg></button>
     </div>
 
     <!-- Scrollable grid side -->
@@ -636,11 +651,13 @@
         <div class="bottom-impressum">
             <div>
                 <div class="intro-text-title">Movement in Static:<br>A Graphic Translation</div>
-                <div class="intro-text">BA Thesis 2026<br>Visual Communication and Digital Spaces<br>FHNW HGK Basel<br>Specialization: Digital spaces</div>
+                <div class="intro-text">BA Thesis 2026<br>Visual Communication and Digital Spaces<br>FHNW HGK
+                    Basel<br>Specialization: Digital spaces</div>
             </div>
             <div>
                 <div class="intro-text-title">Credits</div>
-                <div class="intro-text">Concept and design: Mykyta Kramarenko<br>Mentors: Marion Fink, Kambiz Shafeei<br>Software: Adobe Illustrator, InDesign<br>Typeface: Unica77<br>Coding: Claude Code</div>
+                <div class="intro-text">Concept and design: Mykyta Kramarenko<br>Mentors: Marion Fink, Kambiz
+                    Shafeei<br>Software: Adobe Illustrator, InDesign<br>Typeface: Unica77<br>Coding: Claude Code</div>
             </div>
             <div class="intro-text-title">
                 <div class="intro-text">&nbsp<br>&nbsp</div>
@@ -913,6 +930,7 @@
         const gallery = document.getElementById('gallery');
         const viewerPanel = document.getElementById('viewer-panel');
         const viewerImg = document.getElementById('viewer-img');
+        const viewerVideo = document.getElementById('viewer-video');
         let activeCard = null;
 
         function toThumb(src) {
@@ -1097,24 +1115,26 @@
         const finalGrid1 = document.createElement('div');
         finalGrid1.className = 'date-grid';
         [
-            'images/5./Documentation_scetches_thesis_Final-01.jpg',
-            'images/5./Documentation_scetches_thesis_Final-02.jpg',
-            'images/5./Documentation_scetches_thesis_Final-03.jpg',
-            'images/5./Documentation_scetches_thesis_Final-04.jpg',
-            'images/5./Documentation_scetches_thesis_Final-05.jpg',
-            'images/5./Documentation_scetches_thesis_Final-06.jpg',
-            'images/5./Documentation_scetches_thesis_Final-07.jpg',
-            'images/5./Documentation_scetches_thesis_Final-08.jpg',
-            'images/5./Documentation_scetches_thesis_Final-09.jpg',
-            'images/5./Documentation_scetches_thesis_Final-10.jpg',
-            'images/5./Documentation_scetches_thesis_Final-11.jpg',
-            'images/5./Documentation_scetches_thesis_Final-12.jpg',
+            'images/final scetches/Final_scatches-13.jpg',
+            'images/final scetches/Final_scatches-05.jpg',
+            'images/final scetches/Final_scatches-01.jpg',
+            'images/final scetches/Final_scatches-10.jpg',
+            'images/final scetches/Final_scatches-08.jpg',
+            'images/final scetches/Final_scatches-02.jpg',
+            'images/final scetches/Final_scatches-14.jpg',
+            'images/final scetches/Final_scatches-09.jpg',
+            'images/final scetches/Final_scatches-04.jpg',
+            'images/final scetches/Final_scatches-03.jpg',
+            'images/final scetches/Final_scatches-06.jpg',
+            'images/final scetches/Final_scatches-07.jpg',
+            'images/final scetches/Final_scatches-12.jpg',
+            'images/final scetches/Final_scatches-11.jpg',
         ].forEach(src => {
             const card = document.createElement('article');
             card.className = 'work-card';
             card.dataset.fullSrc = src;
             const img = document.createElement('img');
-            img.src = toThumb(src);
+            img.src = src;
             img.loading = 'lazy';
             img.draggable = false;
             card.appendChild(img);
@@ -1146,24 +1166,37 @@
 
         const finalGroup2 = document.createElement('div');
         finalGroup2.className = 'date-group';
-        finalGroup2.dataset.id = '2. pure-form';
+        finalGroup2.dataset.id = '2. footages';
         const finalGrid2 = document.createElement('div');
         finalGrid2.className = 'date-grid';
-        GROUPS[1].images.forEach(src => {
-            if (src === null) {
-                const gap = document.createElement('div');
-                gap.className = 'grid-gap';
-                finalGrid2.appendChild(gap);
-                return;
-            }
+        [
+            'footages/Hypercar.mp4',
+            'footages/Monaco.mp4',
+            'footages/2 Lambargini.mp4',
+            'footages/Army plane.mp4',
+            'footages/bird takes off.mp4',
+            'footages/Frog Jumping.mp4',
+
+            'footages/McLaren.mp4',
+            
+            'footages/ping-pong.mp4',
+            'footages/Rocket.mp4',
+            'footages/running man start.mov',
+
+            'footages/Wes zoom.mp4',
+            'footages/Stone.mp4',
+        ].forEach(src => {
             const card = document.createElement('article');
             card.className = 'work-card';
             card.dataset.fullSrc = src;
-            const img = document.createElement('img');
-            img.src = toThumb(src);
-            img.loading = 'lazy';
-            img.draggable = false;
-            card.appendChild(img);
+            const video = document.createElement('video');
+            video.src = src;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.autoplay = true;
+            video.draggable = false;
+            card.appendChild(video);
             finalGrid2.appendChild(card);
             card.addEventListener('click', () => handleCardClick(card));
         });
@@ -1259,7 +1292,20 @@
         }
 
         function loadImage(card) {
-            viewerImg.src = card.dataset.fullSrc;
+            const src = card.dataset.fullSrc;
+            const isVideo = /\.(mp4|mov|webm)$/i.test(src);
+            if (isVideo) {
+                viewerImg.style.display = 'none';
+                viewerVideo.style.display = 'block';
+                viewerVideo.src = src;
+                viewerVideo.play();
+            } else {
+                viewerVideo.pause();
+                viewerVideo.src = '';
+                viewerVideo.style.display = 'none';
+                viewerImg.style.display = 'block';
+                viewerImg.src = src;
+            }
         }
 
         function goTo(delta) {
@@ -1276,6 +1322,8 @@
         function closeViewer() {
             if (activeCard) activeCard.classList.remove('selected');
             activeCard = null;
+            viewerVideo.pause();
+            viewerVideo.src = '';
             document.body.classList.remove('viewer-active');
         }
 
