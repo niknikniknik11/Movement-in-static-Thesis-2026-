@@ -86,16 +86,16 @@
         }
 
         .video-meta {
-            padding-top: 8px;
+            padding-top: 16px;
         }
 
-        .video-num {
+        /* .video-num {
             font-size: 16px;
             font-weight: 100;
             color: #000;
             text-transform: uppercase;
             line-height: 1.3;
-        }
+        } */
 
         .video-desc {
             font-size: 16px;
@@ -187,20 +187,20 @@
 
     <script>
         const videos = [
-            { src: 'footages/The feather.mp4',           num: 'Footage 01', desc: 'Feather falling, slow motion' },
-            { src: 'footages/Rocket.mp4',                num: 'Footage 02', desc: 'Delta II rocket launch, NASA GRAIL mission, Cape Canaveral' },
-            { src: 'footages/Hypercar2.mp4',             num: 'Footage 03', desc: 'Peugeot 9X8 at Eau Rouge, Spa-Francorchamps' },
-            { src: 'footages/Hotel_Zoom.mp4',            num: 'Footage 04', desc: 'Zoom shot, The Grand Budapest Hotel, Wes Anderson, 2014, 1:02:57–1:03:03' },
-            { src: 'footages/Army_plane.mp4',            num: 'Footage 05', desc: 'F-22 Raptor take-off, Lockheed Martin' },
-            { src: 'footages/Monaco.mp4',                num: 'Footage 06', desc: 'F1 cars at Fairmont Hairpin, Monaco Grand Prix, 2026' },
-            { src: 'footages/Vinyl.mp4',                 num: 'Footage 07', desc: 'Vinyl record player, close-up' },
-            { src: 'footages/McLaren2.mp4',              num: 'Footage 08', desc: 'McLaren qualifying lap, Albert Park Circuit, Melbourne, 2026' },
-            { src: 'footages/bird takes off.mp4',        num: 'Footage 09', desc: 'Sparrow taking off from grass' },
-            { src: 'footages/2_Lambargini.mp4',          num: 'Footage 10', desc: 'Lamborghini Huracán LP 580-2 and Ferrari 458 Speciale, track day' },
-            { src: 'footages/Frog Jumping.mp4',          num: 'Footage 11', desc: 'Gliding Leaf Frog jumping' },
-            { src: 'footages/running man start.mp4',     num: 'Footage 12', desc: 'Sprinter at the start, athletics' },
-            { src: 'footages/Stone.mp4',                 num: 'Footage 13', desc: 'Stone skipping on water, slow motion' },
-            { src: 'footages/ping-pong.mp4',             num: 'Footage 14', desc: 'Fan Zhendong vs Ma Long, ITTF World Tour Grand Finals, 2020' },
+            { src: 'footages/The feather.mp4',           num: '1', desc: 'Feather falling, slow motion' },
+            { src: 'footages/Rocket.mp4',                num: '2', desc: 'Delta II rocket launch, NASA GRAIL mission, Cape Canaveral' },
+            { src: 'footages/Hypercar2.mp4',             num: '3', desc: 'Peugeot 9X8 at Eau Rouge, Spa-Francorchamps' },
+            { src: 'footages/Hotel_Zoom.mp4',            num: '4', desc: 'Zoom shot, The Grand Budapest Hotel, Wes Anderson, 2014, 1:02:57–1:03:03' },
+            { src: 'footages/Army_plane.mp4',            num: '5', desc: 'F-22 Raptor take-off, Lockheed Martin' },
+            { src: 'footages/Monaco.mp4',                num: '6', desc: 'F1 cars at Fairmont Hairpin, Monaco Grand Prix, 2026' },
+            { src: 'footages/Vinyl.mp4',                 num: '7', desc: 'Vinyl record player, close-up' },
+            { src: 'footages/McLaren2.mp4',              num: '8', desc: 'McLaren qualifying lap, Albert Park Circuit, Melbourne, 2026' },
+            { src: 'footages/bird takes off.mp4',        num: '9', desc: 'Sparrow taking off from grass' },
+            { src: 'footages/2_Lambargini.mp4',          num: '0', desc: 'Lamborghini Huracán LP 580-2 and Ferrari 458 Speciale, track day' },
+            { src: 'footages/Frog Jumping.mp4',          num: '1', desc: 'Gliding Leaf Frog jumping' },
+            { src: 'footages/running man start.mp4',     num: '2', desc: 'Sprinter at the start, athletics' },
+            { src: 'footages/Stone.mp4',                 num: '3', desc: 'Stone skipping on water, slow motion' },
+            { src: 'footages/ping-pong.mp4',             num: '4', desc: 'Fan Zhendong vs Ma Long, ITTF World Tour Grand Finals, 2020' },
         ];
 
         const list = document.getElementById('list');
@@ -218,7 +218,7 @@
 
             const meta = document.createElement('div');
             meta.className = 'video-meta';
-            meta.innerHTML = `<div class="video-num">${num}</div><div class="video-desc">${desc}</div>`;
+            meta.innerHTML = `<div class="video-desc">${desc}</div>`;
 
             wrap.appendChild(video);
             wrap.appendChild(meta);
