@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement in Static — Footages</title>
+    <style>
+        @font-face {
+            font-family: 'HGKBUnica77VIPBeta';
+            src: url('./HGKBUnica77VIPBeta.ttf') format('truetype');
+            font-weight: 32 228;
+            font-stretch: 80% 100%;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'HGKBUnica77VIPBeta', sans-serif;
+            font-variation-settings: 'wdth' 100;
+            -webkit-font-smoothing: antialiased;
+            background: #fff;
+            color: #000;
+            padding: 8px;
+        }
+
+        .header {
+            font-size: 54px;
+            font-weight: 110;
+            line-height: 1;
+            padding: 4px 0 48px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card:hover {
+            outline: 1px solid #000;
+            outline-offset: -1px;
+        }
+
+        .card.selected {
+            outline: 2px solid #000;
+            outline-offset: -2px;
+        }
+
+        .label {
+            font-size: 18px;
+            font-weight: 80;
+            color: #5a5a5a;
+            padding: 6px 0 0 0;
+            text-transform: uppercase;
+        }
+
+        /* Viewer */
+        .viewer {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        body.viewer-active .viewer {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .viewer video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .viewer-close {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            z-index: 51;
+        }
+
+        .viewer-close:hover { color: #5a5a5a; }
+    </style>
+</head>
+<body>
+
+    <div class="header">FOOTAGES</div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="viewer" id="viewer">
+        <button class="viewer-close" id="viewer-close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.32 106.31" width="42" height="42" fill="currentColor">
+                <polygon points="65.01 53.16 106.32 94.47 94.47 106.31 53.16 65 11.85 106.31 0 94.47 41.32 53.16 0 11.84 11.85 0 53.16 41.31 94.47 0 106.32 11.84 65.01 53.16"/>
+            </svg>
+        </button>
+        <video id="viewer-video" muted loop playsinline autoplay></video>
+    </div>
+
+    <script>
+        const videos = [
+            { src: 'footages/2_Lambargini.mp4',         label: '2 Lamborghini' },
+            { src: 'footages/Army_plane.mp4',            label: 'Army Plane' },
+            { src: 'footages/bird takes off.mp4',        label: 'Bird Takes Off' },
+            { src: 'footages/Frog Jumping.mp4',          label: 'Frog Jumping' },
+            { src: 'footages/Hotel_Zoom.mp4',            label: 'Hotel Zoom' },
+            { src: 'footages/Hypercar2.mp4',             label: 'Hypercar' },
+            { src: 'footages/McLaren2.mp4',              label: 'McLaren' },
+            { src: 'footages/Monaco.mp4',                label: 'Monaco' },
+            { src: 'footages/ping-pong.mp4',             label: 'Ping-Pong' },
+            { src: 'footages/Rocket.mp4',                label: 'Rocket' },
+            { src: 'footages/running man start.mp4',     label: 'Running Man' },
+            { src: 'footages/Stone.mp4',                 label: 'Stone' },
+            { src: 'footages/The feather.mp4',           label: 'The Feather' },
+            { src: 'footages/Vinyl.mp4',                 label: 'Vinyl' },
+        ];
+
+        const grid = document.getElementById('grid');
+        const viewer = document.getElementById('viewer');
+        const viewerVideo = document.getElementById('viewer-video');
+        const viewerClose = document.getElementById('viewer-close');
+        let activeCard = null;
+
+        videos.forEach(({ src, label }) => {
+            const wrap = document.createElement('div');
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const video = document.createElement('video');
+            video.src = src;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.autoplay = true;
+
+            card.appendChild(video);
+            card.addEventListener('click', () => {
+                if (activeCard) activeCard.classList.remove('selected');
+                activeCard = card;
+                card.classList.add('selected');
+                viewerVideo.src = src;
+                viewerVideo.play();
+                document.body.classList.add('viewer-active');
+            });
+
+            const lbl = document.createElement('div');
+            lbl.className = 'label';
+            lbl.textContent = label;
+
+            wrap.appendChild(card);
+            wrap.appendChild(lbl);
+            grid.appendChild(wrap);
+        });
+
+        function closeViewer() {
+            if (activeCard) activeCard.classList.remove('selected');
+            activeCard = null;
+            viewerVideo.pause();
+            viewerVideo.src = '';
+            document.body.classList.remove('viewer-active');
+        }
+
+        viewerClose.addEventListener('click', closeViewer);
+        viewer.addEventListener('click', e => { if (e.target === viewer || e.target === viewerVideo) closeViewer(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+    </script>
+</body>
+</html>
