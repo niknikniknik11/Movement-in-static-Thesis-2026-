@@ -940,21 +940,33 @@
         // ── SECTION HEADERS ──
         const theoreticalLabel = document.createElement('div');
         theoreticalLabel.className = 'section-label section-label-bar';
-        theoreticalLabel.innerHTML = `<span>ABOUT THE PROJECT</span><a href="#" class="">REF ↗</a>`;
+        theoreticalLabel.innerHTML = `<span>ABOUT THE PROJECT</span><a href="#" id="ref-btn">REFERENCES</a>`;
 
         const theorySectionEl = document.createElement('div');
         theorySectionEl.className = 'section-body';
         theorySectionEl.innerHTML = `
             <div class="section-block">
-                       <div class="intro-text-title">Motivation</div>
-                        <div class="intro-text">For the last five years I worked extensively with animation, film, and digital tools. Movement, change, and dynamism have always fascinated me. But animation is a complex medium with many limitations. That was the reason I decided to explore movement through graphic design instead- a universal and direct form of communication. I wanted to take the energy from motion design and compress it into the most reduced visual language possible. Static design works on every medium, requires no screen time, no interaction. The question was whether that short form could carry something as complex as movement</div>
-                        
-                    </div>
-                    <div class="section-block">
-                        <div class="intro-text-title">Limitations</div>
-                        <div class="intro-text">This topic could have been explored in many different ways. To maintain a more systematic approach, it was important to define clear limitations. All work was created digitally in Adobe Illustrator- no manual drawing. Color, illustration, photography, and any form of animation were deliberately excluded. The focus was placed exclusively on abstract movement- no real objects, no environments, no context. Only the motion itself, translated into the simplest possible geometric forms. The goal was not data visualization or an objective record, but a personal graphic interpretation. Someone else would translate the same footage differently. That subjectivity is part of the project.</div>
-
-                    </div>
+                <div class="intro-text-title">Motivation</div>
+                <div class="intro-text">For the last five years I worked extensively with animation, film, and digital tools. Movement, change, and dynamism have always fascinated me. But animation is a complex medium with many limitations. That was the reason I decided to explore movement through graphic design instead- a universal and direct form of communication. I wanted to take the energy from motion design and compress it into the most reduced visual language possible. Static design works on every medium, requires no screen time, no interaction. The question was whether that short form could carry something as complex as movement</div>
+            </div>
+            <div class="section-block">
+                <div class="intro-text-title">Limitations</div>
+                <div class="intro-text">This topic could have been explored in many different ways. To maintain a more systematic approach, it was important to define clear limitations. All work was created digitally in Adobe Illustrator- no manual drawing. Color, illustration, photography, and any form of animation were deliberately excluded. The focus was placed exclusively on abstract movement- no real objects, no environments, no context. Only the motion itself, translated into the simplest possible geometric forms. The goal was not data visualization or an objective record, but a personal graphic interpretation. Someone else would translate the same footage differently. That subjectivity is part of the project.</div>
+            </div>
+            <div class="section-block impressium-text" id="ref-text" style="grid-column: 4">
+                <div class="intro-text-title">References</div>
+                <div class="intro-text">
+                    Wassily Kandinsky- Point and Line to Plane<br>
+                    Bridget Riley- repetition, optical movement, organic textures<br>
+                    Wim Crouwel- grid-based dynamic typography<br>
+                    Karl Gerstner- Designing Programmes, limited variables, systematic variation<br>
+                    Josef Müller-Brockmann- grid as movement<br>
+                    Jost Hochuli<br>
+                    Hans Rudolf Bosshard<br>
+                    Hoang Nguyen- legibility threshold, systematic methodology (HGK)<br>
+                    REPLICA- A Visual Argument against the Primacy of Innovation (ZHdK, Zurich)
+                </div>
+            </div>
         `;
 
         // Wrap theory content so its sticky label is bounded to this section only
@@ -1158,7 +1170,7 @@
 
         const finalSublabel2 = document.createElement('div');
         finalSublabel2.className = 'date-sublabel';
-        finalSublabel2.textContent = 'Something different';
+        finalSublabel2.textContent = 'Selection of footages';
         finalWrapper.appendChild(finalSublabel2);
 
         const finalAnchor2 = document.createElement('div');
@@ -1504,6 +1516,17 @@
 
         contentBtn.addEventListener('click', () => {
             impressiumText.classList.toggle('open');
+            refText.classList.remove('open');
+        });
+
+        const refText = document.getElementById('ref-text');
+        const refBtn = document.getElementById('ref-btn');
+        theorySectionEl.style.gridTemplateColumns = '24% 24% 24% 24%';
+
+        refBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            refText.classList.toggle('open');
+            impressiumText.classList.remove('open');
         });
     </script>
 </body>
