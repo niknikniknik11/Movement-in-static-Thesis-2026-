@@ -439,6 +439,15 @@
             color: #5a5a5a;
         }
 
+        .section-label-bar:hover {
+            color: #000;
+        }
+
+        .section-label-bar > span:hover,
+        #ref-btn:hover {
+            color: #5a5a5a;
+        }
+
         /* PRACTICAL PART label row: title left, filters right */
         .section-label-bar {
             width: 100%;
@@ -642,9 +651,9 @@
                             Visual Communication and Digital Spaces, FHNW HGK Basel<br>
                             Specialization: Digital spaces<br>
                             Concept and design: Mykyta Kramarenko<br>
-                            Mentors: Marion Fink, Kambiz Shafeei,<br>
-                            Software: Adobe Illustrator, indesign<br>
-                            Typeface:<br>
+                            Mentors: Marion Fink, Kambiz Shafeei<br>
+                            Software: Adobe Illustrator, Adobe InDesign<br>
+                            Typeface: Camera Plain, ABC Dinamo<br>
                             Coding: Claude Code<br>
                             © 2026 Mykyta Kramarenko / FHNW HGK Basel<br>
                         </div>
@@ -1524,7 +1533,6 @@
 
         contentBtn.addEventListener('click', () => {
             impressiumText.classList.toggle('open');
-            refText.classList.remove('open');
         });
 
         const refText = document.getElementById('ref-text');
@@ -1534,7 +1542,6 @@
         refBtn.addEventListener('click', (e) => {
             e.preventDefault();
             refText.classList.toggle('open');
-            impressiumText.classList.remove('open');
         });
     </script>
 </body>
