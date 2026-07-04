@@ -556,15 +556,15 @@
         /* ── IPAD PRO 12.9" ── */
         @media (min-width: 1024px) and (max-width: 1366px) {
 
-            /* intro: 3 columns */
+            /* intro: 2 columns — nav left, introduction+context stacked right */
             .intro {
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .intro-block:nth-child(1) { grid-column: 1; grid-row: 1; }
             .intro-block:nth-child(2) { grid-column: 2; grid-row: 1; }
             .intro-block:nth-child(3) { grid-column: 2; grid-row: 2; }
             .intro-block:nth-child(3) .intro-text-title { display: none; }
-            .intro-block:nth-child(4) { grid-column: 3; grid-row: 1 / span 2; }
+            .intro-block:nth-child(4) { grid-column: 1; grid-row: 2; }
 
             /* section sidebar: 33% instead of 25.5% */
             .gallery-section {
