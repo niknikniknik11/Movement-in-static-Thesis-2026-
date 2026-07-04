@@ -144,6 +144,14 @@
             .impressum-right { text-align: }
         }
 
+        /* ── IPAD ── */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            .bottom-impressum {
+                grid-template-columns: 33% 33% 1fr;
+            }
+            .bottom-impressum > div:nth-child(3) { display: none; }
+        }
+
         /* ── DESKTOP ── */
         @media (min-width: 768px) {
             .grid-controls {
