@@ -11,11 +11,13 @@
             src: url('./ABCCameraPlain-Regular-Trial.otf') format('opentype');
             font-weight: 400;
         }
+
         @font-face {
             font-family: 'ABCCameraPlain';
             src: url('./ABCCameraPlain-Medium-Trial.otf') format('opentype');
             font-weight: 500;
         }
+
         @font-face {
             font-family: 'ABCCameraPlain';
             src: url('./ABCCameraPlain-Bold-Trial.otf') format('opentype');
@@ -225,16 +227,8 @@
             color: #000000;
             cursor: pointer;
             transition: opacity 0.35s ease;
-            display: grid;
-            grid-template-columns: 40% 1fr;
-            align-items: baseline;
             text-transform: uppercase;
-        }
-
-        .date-label-period {
-            font-size: 18px;
-            font-weight: 500;
-            color: #ffffff;
+            align-self: start;
         }
 
         .date-sublabel {
@@ -244,6 +238,7 @@
             line-height: 1.3;
             padding: 7px 0px 4px 0px;
             align-self: baseline;
+            max-width: 37%;
         }
 
         .date-label:hover {
@@ -413,9 +408,7 @@
             padding: 92px 0 0px 0px;
         }
 
-        .impressum-right {
-            
-        }
+        .impressum-right {}
 
         /* ── SECTION LABELS (level 1 nav) ── */
         .section-label {
@@ -443,7 +436,7 @@
             color: #000;
         }
 
-        .section-label-bar > span:hover,
+        .section-label-bar>span:hover,
         #ref-btn:hover {
             color: #5a5a5a;
         }
@@ -668,11 +661,14 @@
         <div class="bottom-impressum">
             <div>
                 <div class="intro-text-title">Movement in Static:<br>A Graphic Interpretation</div>
-                <div class="intro-text">BA Thesis 2026<br>BA Visual Communication and Digital Spaces, FHNW HGK Basel<br>Specialization: Digital Spaces</div>
+                <div class="intro-text">BA Thesis 2026<br>BA Visual Communication and Digital Spaces, FHNW HGK
+                    Basel<br>Specialization: Digital Spaces</div>
             </div>
             <div>
                 <div class="intro-text-title">Credits</div>
-                <div class="intro-text">Concept and design: Mykyta Kramarenko<br>Mentors: Marion Fink, Kambiz Shafeei<br>Typeface: Camera Plain, ABC Dinamo<br>Software: Adobe Illustrator, Adobe InDesign<br>Coding: Claude Code</div>
+                <div class="intro-text">Concept and design: Mykyta Kramarenko<br>Mentors: Marion Fink, Kambiz
+                    Shafeei<br>Typeface: Camera Plain, ABC Dinamo<br>Software: Adobe Illustrator, Adobe
+                    InDesign<br>Coding: Claude Code</div>
             </div>
             <div></div>
             <div class="impressum-right">
@@ -1110,148 +1106,146 @@
         finalBodyEl.innerHTML = `
             <div class="section-block">
                <div class="intro-text-title">Final Concept</div>
-                <div class="intro-text">The final result is a personal graphic interpretation of movement- stripped of everything video contains: color, sound, environment, visual noise. Each footage is translated into a single static image using only simple geometric shapes. No context, no objectivity. Just movement, as I see it.</div>
+                <div class="intro-text">The final result is a personal interpretation of movement- stripped of everything video contains: color, sound, environment, visual noise. Each footage is turned into a single static image using only simple geometric shapes. No context, no objectivity. Just movement, as I see it.</div>
             </div>
             <div class="section-block">
                 <div class="intro-text-title">Outcome</div>
-                <div class="intro-text">The work is presented as a book- a collection of video footages and their graphic translations. Each footage exists as a single static image. The graphics and the original videos are kept separate- first you see the interpretation, then the source. Together they form a complete picture.</div>
+                <div class="intro-text">The final work is a collection of sixteen graphic interpretations- each one a personal reading of a specific video, turned into a single static image. The book is the medium through which these works are presented: it sets their order, gives them equal weight, and creates the sequence in which the viewer encounters them. First the graphic, then the source. The graphics are the work. The book is the form.</div>
             </div>
         `;
         finalWrapper.appendChild(finalBodyEl);
 
-        const finalLabel1 = document.createElement('div');
-        finalLabel1.className = 'date-label';
-        const finalLabelText1 = document.createElement('span');
-        finalLabelText1.textContent = '1. Final graphics';
-        finalLabel1.appendChild(finalLabelText1);
-        finalWrapper.appendChild(finalLabel1);
+        function makeFinalGroup(id, sublabelText, items, isVideo) {
+            const label = document.createElement('div');
+            label.className = 'date-label';
+            const labelText = document.createElement('span');
+            labelText.textContent = id;
+            label.appendChild(labelText);
+            finalWrapper.appendChild(label);
 
-        const finalSublabel1 = document.createElement('div');
-        finalSublabel1.className = 'date-sublabel';
-        finalSublabel1.textContent = 'Final selection of graphics';
-        finalWrapper.appendChild(finalSublabel1);
+            const sublabel = document.createElement('div');
+            sublabel.className = 'date-sublabel';
+            sublabel.textContent = sublabelText;
+            finalWrapper.appendChild(sublabel);
 
-        const finalAnchor1 = document.createElement('div');
-        finalWrapper.appendChild(finalAnchor1);
+            const anchor = document.createElement('div');
+            finalWrapper.appendChild(anchor);
 
-        const finalGroup1 = document.createElement('div');
-        finalGroup1.className = 'date-group';
-        finalGroup1.dataset.id = '1. Final graphics';
-        const finalGrid1 = document.createElement('div');
-        finalGrid1.className = 'date-grid';
-        [
-            'images/final scetches/Final_scatches-13.jpg',
-            'images/final scetches/Final_scatches-05.jpg',
-            'images/final scetches/Final_scatches-01.jpg',
-            'images/final scetches/Final_scatches_16.jpg',
-            'images/final scetches/Final_scatches-10.jpg',
-            'images/final scetches/Final_scatches-08.jpg',
-            'images/final scetches/Final_scatches-02.jpg',
-            'images/final scetches/Final_scatches-14.jpg',
-            'images/final scetches/Final_scatches-09.jpg',
-            'images/final scetches/Final_scatches.jpg',
-            'images/final scetches/Final_scatches-03.jpg',
-            'images/final scetches/Final_scatches-06.jpg',
-            'images/final scetches/Final_scatches-07.jpg',
-            'images/final scetches/Final_scatches-12.jpg',
-            'images/final scetches/Final_scatches-.jpg',
-            
-            'images/final scetches/Final_scatches_.jpg',
-        ].forEach(src => {
-            const card = document.createElement('article');
-            card.className = 'work-card';
-            card.dataset.fullSrc = src;
-            const img = document.createElement('img');
-            img.src = src;
-            img.loading = 'lazy';
-            img.draggable = false;
-            card.appendChild(img);
-            finalGrid1.appendChild(card);
-            card.addEventListener('click', () => handleCardClick(card));
-        });
-        finalGroup1.appendChild(finalGrid1);
-        finalWrapper.appendChild(finalGroup1);
-        finalLabel1.addEventListener('click', () => {
-            const stickyBottom = parseInt(finalLabel1.style.top) + finalLabel1.offsetHeight;
-            const blockAbsTop = finalAnchor1.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
-        });
+            const group = document.createElement('div');
+            group.className = 'date-group';
+            group.dataset.id = id;
+            const grid = document.createElement('div');
+            grid.className = 'date-grid';
 
-        const finalLabel2 = document.createElement('div');
-        finalLabel2.className = 'date-label';
-        const finalLabelText2 = document.createElement('span');
-        finalLabelText2.textContent = '2. Footages';
-        finalLabel2.appendChild(finalLabelText2);
-        finalWrapper.appendChild(finalLabel2);
+            items.forEach(src => {
+                const card = document.createElement('article');
+                card.className = 'work-card';
+                card.dataset.fullSrc = src;
+                const media = document.createElement(isVideo ? 'video' : 'img');
+                media.src = src;
+                if (isVideo) {
+                    media.muted = true;
+                    media.loop = true;
+                    media.playsInline = true;
+                    media.autoplay = true;
+                } else {
+                    media.loading = 'lazy';
+                }
+                media.draggable = false;
+                card.appendChild(media);
+                grid.appendChild(card);
+                card.addEventListener('click', () => handleCardClick(card));
+            });
+            group.appendChild(grid);
+            finalWrapper.appendChild(group);
 
-        const finalSublabel2 = document.createElement('div');
-        finalSublabel2.className = 'date-sublabel';
-        finalSublabel2.textContent = 'Selection of footages';
-        finalWrapper.appendChild(finalSublabel2);
+            label.addEventListener('click', () => {
+                const stickyBottom = parseInt(label.style.top) + label.offsetHeight;
+                const blockAbsTop = anchor.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+            });
 
-        const finalAnchor2 = document.createElement('div');
-        finalWrapper.appendChild(finalAnchor2);
+            return { label, anchor, group };
+        }
 
-        const finalGroup2 = document.createElement('div');
-        finalGroup2.className = 'date-group';
-        finalGroup2.dataset.id = '2. footages';
-        const finalGrid2 = document.createElement('div');
-        finalGrid2.className = 'date-grid';
-        [
+        const finalGroups = [
+            makeFinalGroup('1.1. Movement of the object', 'The object is shown as a sequence of simple geometric shapes across the frame. Each shape marks a moment in time- together they trace the path the object travelled.', [
 
 
-            'footages/The feather.mp4',
-            'footages/Rocket.mp4',
-            'footages/Hypercar2.mp4',
-            'footages/Oli and velo.mp4',
-            'footages/Hotel_Zoom.mp4',
-            'footages/Army_plane.mp4',
-            'footages/Monaco.mp4',
-            'footages/Vinyl.mp4',
-            'footages/McLaren2.mp4',
-
-            'footages/bird takes off.mp4',
-            'footages/2_Lambargini.mp4',
-            'footages/Frog Jumping.mp4',
-            
-
-            'footages/running man start.mp4',
-            
-            
-
-            
-            'footages/Stone.mp4',
-            'footages/ping-pong.mp4',
-            'footages/Aftersun ending.mp4',
-        ].forEach(src => {
-            const card = document.createElement('article');
-            card.className = 'work-card';
-            card.dataset.fullSrc = src;
-            const video = document.createElement('video');
-            video.src = src;
-            video.muted = true;
-            video.loop = true;
-            video.playsInline = true;
-            video.autoplay = true;
-            video.draggable = false;
-            card.appendChild(video);
-            finalGrid2.appendChild(card);
-            card.addEventListener('click', () => handleCardClick(card));
-        });
-        finalGroup2.appendChild(finalGrid2);
-        finalWrapper.appendChild(finalGroup2);
-        finalLabel2.addEventListener('click', () => {
-            const stickyBottom = parseInt(finalLabel2.style.top) + finalLabel2.offsetHeight;
-            const blockAbsTop = finalAnchor2.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
-        });
+                'images/5./visual language_documentation-83.jpg',
+                'images/5./visual language_documentation-84.jpg',
+                'images/5./visual language_documentation-85.jpg',
+                'images/5./visual language_documentation-86.jpg',
+                
+            ]),
+            makeFinalGroup('1.2. Speed of the object', 'Speed is represented through a sequence of vertical lines. Thick lines indicate fast movement, thin lines indicate slow. The rhythm and density of the lines describe how the speed changes over time.', [
+                'images/5./visual language_documentation-78.jpg',
+                'images/5./visual language_documentation-79.jpg',
+                'images/5./visual language_documentation-80.jpg',
+                'images/5./visual language_documentation-81.jpg',
+                'images/5./visual language_documentation-82.jpg',
+            ]),
+            makeFinalGroup('1.3. Direction of the object', 'Direction is shown through a shape resembling an arrow- a form that carries orientation without pointing literally. Its angle and position indicate where the object is going.', [
+                
+                'images/5./visual language_documentation-87.jpg',
+                'images/5./visual language_documentation-88.jpg',
+                'images/5./visual language_documentation-89.jpg',
+                'images/5./visual language_documentation-90.jpg',
+                'images/5./visual language_documentation-91.jpg',
+            ]),
+            makeFinalGroup('1.4. Behavior of the camera', 'The frame of the graphic is the camera itself. When the camera is still, the frame stays a stable square and is not drawn. When the camera moves, the frame becomes visible as a 2-pixel outline that deforms — stretches, rotates, tilts — according to the cameras behavior.', [
+                'images/5./visual language_documentation-73.jpg',
+                'images/5./visual language_documentation-74.jpg',
+                'images/5./visual language_documentation-75.jpg',
+                'images/5./visual language_documentation-76.jpg',
+                'images/5./visual language_documentation-77.jpg',
+            ]),
+            makeFinalGroup('2. Final graphics', 'Final selection of graphics', [
+                'images/final scetches/Final_scatches-13.jpg',
+                'images/final scetches/Final_scatches-05.jpg',
+                'images/final scetches/Final_scatches-01.jpg',
+                'images/final scetches/Final_scatches_16.jpg',
+                'images/final scetches/Final_scatches-10.jpg',
+                'images/final scetches/Final_scatches-08.jpg',
+                'images/final scetches/Final_scatches-02.jpg',
+                'images/final scetches/Final_scatches-14.jpg',
+                'images/final scetches/Final_scatches-09.jpg',
+                'images/final scetches/Final_scatches.jpg',
+                'images/final scetches/Final_scatches-03.jpg',
+                'images/final scetches/Final_scatches-06.jpg',
+                'images/final scetches/Final_scatches-07.jpg',
+                'images/final scetches/Final_scatches-12.jpg',
+                'images/final scetches/Final_scatches-.jpg',
+                'images/final scetches/Final_scatches_.jpg',
+            ]),
+            makeFinalGroup('3. Footages', 'Selection of footages', [
+                'footages/The feather.mp4',
+                'footages/Rocket.mp4',
+                'footages/Hypercar2.mp4',
+                'footages/Oli and velo.mp4',
+                'footages/Hotel_Zoom.mp4',
+                'footages/Army_plane.mp4',
+                'footages/Monaco.mp4',
+                'footages/Vinyl.mp4',
+                'footages/McLaren2.mp4',
+                'footages/bird takes off.mp4',
+                'footages/2_Lambargini.mp4',
+                'footages/Frog Jumping.mp4',
+                'footages/running man start.mp4',
+                'footages/Stone.mp4',
+                'footages/ping-pong.mp4',
+                'footages/Aftersun ending.mp4',
+            ], true),
+            makeFinalGroup('4. Final product documentation', 'The final work is a printed book. 16 graphic interpretations in sequence, each followed by a screenshot with key hints from the source video', []),
+        ];
 
         gallery.appendChild(finalWrapper);
 
-        // ── FINAL RESULT STICKY NAV (same logic as PROCESS, independent) ──
-        const finalNavLabels = [finalLabel1, finalLabel2];
-        const finalNavAnchors = [finalGroup1, finalGroup2];
+        // ── FINAL RESULT STICKY NAV (identical mechanism to PROCESS's updateNav) ──
+        const finalNavLabels = finalGroups.map(g => g.label);
+        const finalNavAnchors = finalGroups.map(g => g.anchor);
         const finalNavHeights = [];
+        const finalNaturalTops = [];
         const finalLabelTargets = [];
         let finalSectionH = 0;
         let finalTRAVEL = 0;
@@ -1259,44 +1253,71 @@
 
         requestAnimationFrame(() => {
             finalSectionH = finalLabel.getBoundingClientRect().height;
-            let ftop = finalSectionH - 1;
+            let top = finalSectionH - 1;
             finalNavLabels.forEach((el, i) => {
                 finalNavHeights[i] = el.getBoundingClientRect().height;
-                el.style.top = ftop + 'px';
-                ftop += finalNavHeights[i] - 1;
+                finalNaturalTops[i] = top;
+                el.style.top = top + 'px';
+                top += finalNavHeights[i] - 1;
             });
+
             finalNavLabels.forEach((el, i) => {
                 let t = 0;
                 for (let j = i + 1; j < finalNavLabels.length; j++) t += (finalNavHeights[j] || 0) - 1;
                 finalLabelTargets[i] = t;
             });
-            finalTRAVEL = (finalLabelTargets[0] || 0) + (finalNavHeights[0] || 48);
+            finalTRAVEL = ((finalLabelTargets[0] || 0) + (finalNavHeights[0] || 48) + 0) * 3;
             finalNavLabels.forEach((el, i) => {
                 el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
             });
+
             finalLabel.querySelector('span').addEventListener('click', () => {
                 const targetTop = finalBodyEl.getBoundingClientRect().top + window.scrollY;
                 window.scrollTo({ top: targetTop - finalSectionH, behavior: 'smooth' });
             });
+
             updateFinalNav();
         });
 
         function updateFinalNav() {
             const chaptersVisible = finalNavLabels.length > 0 &&
                 finalNavLabels[0].getBoundingClientRect().top <= window.innerHeight;
+
             if (!chaptersVisible) {
                 finalEntryScrollY = null;
                 finalNavLabels.forEach((el, i) => {
+                    el.style.top = finalNaturalTops[i] + 'px';
                     el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
                 });
                 return;
             }
+
+            // EXIT: when finalWrapper bottom is inside the stacked label zone,
+            // slide all labels off together maintaining their spacing (same as PROCESS)
+            const wrapperBottom = finalWrapper.getBoundingClientRect().bottom;
+            const totalLabelH = finalNavHeights.reduce((s, h) => s + h, 0);
+            if (wrapperBottom < finalSectionH + totalLabelH) {
+                let exitTop = wrapperBottom;
+                for (let i = finalNavLabels.length - 1; i >= 0; i--) {
+                    exitTop -= finalNavHeights[i];
+                    finalNavLabels[i].style.top = exitTop + 'px';
+                    finalNavLabels[i].style.bottom = '';
+                }
+                return;
+            }
+
+            finalNavLabels.forEach((el, i) => {
+                el.style.top = finalNaturalTops[i] + 'px';
+            });
+
             if (finalEntryScrollY === null) finalEntryScrollY = window.scrollY;
             const scrolled = window.scrollY - finalEntryScrollY;
+
             let currentIndex = -1;
             finalNavAnchors.forEach((anchor, i) => {
                 if (anchor.getBoundingClientRect().top <= window.innerHeight / 2) currentIndex = i;
             });
+
             finalNavLabels.forEach((el, i) => {
                 if (i <= currentIndex) {
                     el.style.bottom = '';
@@ -1305,6 +1326,7 @@
                 }
             });
         }
+
         window.addEventListener('scroll', updateFinalNav, { passive: true });
 
         // ── VIEWER ──
@@ -1519,8 +1541,9 @@
             label: g.label, labelEl: chapterLabels[i], anchorEl: chapterAnchors[i], indent: true
         }));
         navSections.push({ label: 'Final result', labelEl: finalLabel, anchorEl: finalBodyEl });
-        navSections.push({ label: '1.    Final graphics', labelEl: finalNavLabels[0], anchorEl: finalAnchor1, indent: true });
-        navSections.push({ label: '2.    Footages', labelEl: finalNavLabels[1], anchorEl: finalAnchor2, indent: true });
+        finalGroups.forEach(g => navSections.push({
+            label: g.group.dataset.id, labelEl: g.label, anchorEl: g.anchor, indent: true
+        }));
 
         navSections.forEach(({ label, labelEl, anchorEl, indent }) => {
             const item = document.createElement('button');
