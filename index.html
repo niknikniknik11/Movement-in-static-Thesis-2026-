@@ -549,6 +549,45 @@
             color: #5a5a5a;
         }
 
+        /* ── IPAD PRO 12.9" ── */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+
+            /* intro: 3 columns */
+            .intro {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .intro-block:nth-child(1) { grid-column: 1; grid-row: 1; }
+            .intro-block:nth-child(2) { grid-column: 2; grid-row: 1; }
+            .intro-block:nth-child(3) { grid-column: 2; grid-row: 2; margin-top: -190px; }
+            .intro-block:nth-child(3) .intro-text-title { display: none; }
+            .intro-block:nth-child(4) { grid-column: 3; grid-row: 1 / span 2; }
+
+            /* section sidebar: 33% instead of 25.5% */
+            .gallery-section {
+                grid-template-columns: 35% 1fr;
+            }
+            .date-grid {
+                margin-left: 35%;
+            }
+            .date-description {
+                width: 33%;
+            }
+
+            /* section body: 3 cols — !important overrides JS inline style */
+            .section-body {
+                grid-template-columns: 33% 33% 1fr !important;
+            }
+            #ref-text {
+                grid-column: 3 !important;
+            }
+
+            /* bottom impressum: 3 cols — empty 3rd div hidden so © flows to col 3 */
+            .bottom-impressum {
+                grid-template-columns: 33% 33% 1fr;
+            }
+            .bottom-impressum > div:nth-child(3) { display: none; }
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             .date-grid {
@@ -653,6 +692,7 @@
                     </div>
                 </div>
             </div>
+            <!-- <div class="intro-text" style="padding: 0 0 48px 4px;">This website is a documentation of the process behind "Movement in Static: A Graphic Interpretation" — the Practical Thesis</div> -->
         </div>
 
 
@@ -714,7 +754,7 @@
                 ]
             },
             {
-                id: '2. pure-form',
+                id: '2. Free experiments',
                 label: '2. Free experiments',
                 period: 'March 2026',
                 shortDesc: 'Open exploration of lines, shapes, and typography without references.',
@@ -740,6 +780,13 @@
                     'images/2./Documentation_scetches_thesis_28.04-137-25-37.jpg',
                     'images/3./Documentation_scetches_thesis_28.04-137-25-41.jpg',
                     'images/3./Documentation_scetches_thesis_28.04-137-25-42.jpg',
+                    'images/2./Logos_thesis_18.04_-37.jpg',
+                    'images/2./Logos_thesis_18.04_-38.jpg',
+                    'images/2./Logos_thesis_18.04_-41.jpg',
+                    'images/2./Logos_thesis_18.04_-42.jpg',
+                    'images/2./Logos_thesis_18.04_-43.jpg',
+                    'images/2./Logos_thesis_18.04_-45.jpg',
+
 
                     ...[48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 64, 65].map(n =>
                         `images/2./Documentation_scetches_thesis_1.05-${n}.jpg`),
@@ -757,6 +804,10 @@
                 description: 'A single image was not enough. The question became: what is the minimum number of images needed to communicate movement convincingly?\n\nThe research moved into series — 10 to 12 frames, then reduced to 5, then to 2, then to 1. Each reduction forced clarity. When one image became sufficient — when the graphic could stand alone — the visual language was working.',
                 images: [
                     // 17-20.03 series
+                    'images/3./Logos_thesis_18.04_-49.jpg',
+                    'images/3./Logos_thesis_18.04_-51.jpg',
+                    'images/3./Logos_thesis_18.04_-52.jpg',
+null,
                     'images/2./Documentation_scetches_thesis_17-20.03-137-89.jpg',
                     'images/2./Documentation_scetches_thesis_17-20.03-137-90.jpg',
                     'images/2./Documentation_scetches_thesis_17-20.03-137-91.jpg',
@@ -1559,7 +1610,11 @@
 
         const refText = document.getElementById('ref-text');
         const refBtn = document.getElementById('ref-btn');
-        theorySectionEl.style.gridTemplateColumns = '24% 24% 24% 24%';
+        function setTheoryGrid() {
+            theorySectionEl.style.gridTemplateColumns = window.innerWidth <= 1366 ? '33% 33% 1fr' : '24% 24% 24% 24%';
+        }
+        setTheoryGrid();
+        window.addEventListener('resize', setTheoryGrid);
 
         refBtn.addEventListener('click', (e) => {
             e.preventDefault();
