@@ -221,9 +221,6 @@
             font-size: 18px;
             font-weight: 500;
             padding: 6px 0px 4px 0px;
-            position: sticky;
-            background: none;
-            z-index: 10;
             color: #000000;
             cursor: pointer;
             transition: opacity 0.35s ease;
@@ -249,7 +246,6 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 8px;
-            margin-left: 25.5%;
         }
 
         .work-card {
@@ -454,7 +450,9 @@
             grid-column: 1 / -1;
             position: relative;
             display: grid;
-            grid-template-columns: 25.5% 1fr;
+            grid-template-columns: 24% 1fr;
+            row-gap: 0;
+            column-gap: 24px;
         }
 
 
@@ -562,12 +560,9 @@
             .intro-block:nth-child(3) .intro-text-title { display: none; }
             .intro-block:nth-child(4) { grid-column: 3; grid-row: 1 / span 2; }
 
-            /* section sidebar: 33% instead of 25.5% */
+            /* section sidebar: 35% instead of 25.5% */
             .gallery-section {
                 grid-template-columns: 35% 1fr;
-            }
-            .date-grid {
-                margin-left: 35%;
             }
             .date-description {
                 width: 33%;
@@ -993,6 +988,13 @@ null,
         const viewerVideo = document.getElementById('viewer-video');
         let activeCard = null;
 
+        // Height of the sticky section label (PROCESS / FINAL RESULT) — used as the
+        // scroll offset now that chapter labels are no longer sticky.
+        const SECTION_LABEL_H = () => {
+            const el = document.querySelector('.section-label');
+            return el ? el.getBoundingClientRect().height : 58;
+        };
+
         function toThumb(src) {
             return 'thumbs_new/' + src.split('/').pop();
         }
@@ -1102,9 +1104,8 @@ null,
             chapterAnchors.push(scrollAnchor);
 
             label.addEventListener('click', () => {
-                const stickyBottom = parseInt(label.style.top) + label.offsetHeight;
-                const blockAbsTop = scrollAnchor.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+                const top = label.getBoundingClientRect().top + window.scrollY - SECTION_LABEL_H();
+                window.scrollTo({ top, behavior: 'smooth' });
             });
 
             const grid = document.createElement('div');
@@ -1211,9 +1212,8 @@ null,
             finalWrapper.appendChild(group);
 
             label.addEventListener('click', () => {
-                const stickyBottom = parseInt(label.style.top) + label.offsetHeight;
-                const blockAbsTop = anchor.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: blockAbsTop - stickyBottom, behavior: 'smooth' });
+                const top = label.getBoundingClientRect().top + window.scrollY - SECTION_LABEL_H();
+                window.scrollTo({ top, behavior: 'smooth' });
             });
 
             return { label, anchor, group };
@@ -1287,98 +1287,15 @@ null,
                 'footages/ping-pong.mp4',
                 'footages/Aftersun ending.mp4',
             ], true),
-            makeFinalGroup('4. Final product documentation', 'The final work is a printed book. 16 graphic interpretations in sequence, each followed by a screenshot with key hints from the source video', []),
         ];
 
         gallery.appendChild(finalWrapper);
 
-        // ── FINAL RESULT STICKY NAV (identical mechanism to PROCESS's updateNav) ──
-        const finalNavLabels = finalGroups.map(g => g.label);
-        const finalNavAnchors = finalGroups.map(g => g.anchor);
-        const finalNavHeights = [];
-        const finalNaturalTops = [];
-        const finalLabelTargets = [];
-        let finalSectionH = 0;
-        let finalTRAVEL = 0;
-        let finalEntryScrollY = null;
-
-        requestAnimationFrame(() => {
-            finalSectionH = finalLabel.getBoundingClientRect().height;
-            let top = finalSectionH - 1;
-            finalNavLabels.forEach((el, i) => {
-                finalNavHeights[i] = el.getBoundingClientRect().height;
-                finalNaturalTops[i] = top;
-                el.style.top = top + 'px';
-                top += finalNavHeights[i] - 1;
-            });
-
-            finalNavLabels.forEach((el, i) => {
-                let t = 0;
-                for (let j = i + 1; j < finalNavLabels.length; j++) t += (finalNavHeights[j] || 0) - 1;
-                finalLabelTargets[i] = t;
-            });
-            finalTRAVEL = ((finalLabelTargets[0] || 0) + (finalNavHeights[0] || 48) + 0) * 3;
-            finalNavLabels.forEach((el, i) => {
-                el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
-            });
-
-            finalLabel.querySelector('span').addEventListener('click', () => {
-                const targetTop = finalBodyEl.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: targetTop - finalSectionH, behavior: 'smooth' });
-            });
-
-            updateFinalNav();
+        // FINAL RESULT section label scrolls to its body (chapter labels scroll in normal flow now)
+        finalLabel.querySelector('span').addEventListener('click', () => {
+            const targetTop = finalBodyEl.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: targetTop - SECTION_LABEL_H(), behavior: 'smooth' });
         });
-
-        function updateFinalNav() {
-            const chaptersVisible = finalNavLabels.length > 0 &&
-                finalNavLabels[0].getBoundingClientRect().top <= window.innerHeight;
-
-            if (!chaptersVisible) {
-                finalEntryScrollY = null;
-                finalNavLabels.forEach((el, i) => {
-                    el.style.top = finalNaturalTops[i] + 'px';
-                    el.style.bottom = (finalLabelTargets[i] - finalTRAVEL) + 'px';
-                });
-                return;
-            }
-
-            // EXIT: when finalWrapper bottom is inside the stacked label zone,
-            // slide all labels off together maintaining their spacing (same as PROCESS)
-            const wrapperBottom = finalWrapper.getBoundingClientRect().bottom;
-            const totalLabelH = finalNavHeights.reduce((s, h) => s + h, 0);
-            if (wrapperBottom < finalSectionH + totalLabelH) {
-                let exitTop = wrapperBottom;
-                for (let i = finalNavLabels.length - 1; i >= 0; i--) {
-                    exitTop -= finalNavHeights[i];
-                    finalNavLabels[i].style.top = exitTop + 'px';
-                    finalNavLabels[i].style.bottom = '';
-                }
-                return;
-            }
-
-            finalNavLabels.forEach((el, i) => {
-                el.style.top = finalNaturalTops[i] + 'px';
-            });
-
-            if (finalEntryScrollY === null) finalEntryScrollY = window.scrollY;
-            const scrolled = window.scrollY - finalEntryScrollY;
-
-            let currentIndex = -1;
-            finalNavAnchors.forEach((anchor, i) => {
-                if (anchor.getBoundingClientRect().top <= window.innerHeight / 2) currentIndex = i;
-            });
-
-            finalNavLabels.forEach((el, i) => {
-                if (i <= currentIndex) {
-                    el.style.bottom = '';
-                } else {
-                    el.style.bottom = Math.min(finalLabelTargets[i] - finalTRAVEL + scrolled, finalLabelTargets[i]) + 'px';
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateFinalNav, { passive: true });
 
         // ── VIEWER ──
         const viewerClose = document.getElementById('viewer-close');
@@ -1474,113 +1391,28 @@ null,
         });
         finalWrapper.querySelectorAll('.date-grid').forEach(g => g.style.gridTemplateColumns = `repeat(12, 1fr)`);
 
-        // ── CHAPTER LABEL STICKY NAV ──
-        // Section labels (THEORETICAL PART, PRACTICAL PART, site title) use pure CSS sticky top:0
-        // and naturally cover each other as you scroll — only the latest one is visible.
-        // Chapter labels stack below the active section label via JS top/bottom positioning.
-        const navHeights = [];
-        const naturalTops = [];
-        const labelTargets = [];
-        let sectionH = 0;
-        let TRAVEL = 0;
-        let entryScrollY = null;
-
-        requestAnimationFrame(() => {
-            sectionH = theoreticalLabel.getBoundingClientRect().height;
-            let top = sectionH - 1;
-            chapterLabels.forEach((el, i) => {
-                navHeights[i] = el.getBoundingClientRect().height;
-                naturalTops[i] = top;
-                el.style.top = top + 'px';
-                top += navHeights[i] - 1;
-            });
-
-            // Compute each label's final bottom target
-            chapterLabels.forEach((el, i) => {
-                let t = 0;
-                for (let j = i + 1; j < chapterLabels.length; j++) t += (navHeights[j] || 0) - 1;
-                labelTargets[i] = t;
-            });
-            // All labels travel the same distance so spacing stays constant (no overlap)
-            TRAVEL = (labelTargets[0] || 0) + (navHeights[0] || 48) + 0;
-            chapterLabels.forEach((el, i) => {
-                el.style.bottom = (labelTargets[i] - TRAVEL) + 'px';
-            });
-
-            // Click section labels to scroll to their content
-            theoreticalLabel.querySelector('span').addEventListener('click', () => {
-                const targetTop = theorySectionEl.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: targetTop - sectionH, behavior: 'smooth' });
-            });
-            practicalLabel.querySelector('span').addEventListener('click', () => {
-                const targetTop = practicalBodyEl.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: targetTop - sectionH, behavior: 'smooth' });
-            });
-
-            updateNav();
+        // ── SECTION LABEL CLICK-TO-SCROLL ──
+        // The big section labels (THEORETICAL / PROCESS / site title) stay CSS-sticky.
+        // Chapter labels (.date-label) are no longer sticky — they scroll away in normal flow.
+        theoreticalLabel.querySelector('span').addEventListener('click', () => {
+            const targetTop = theorySectionEl.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: targetTop - SECTION_LABEL_H(), behavior: 'smooth' });
         });
-
-        function updateNav() {
-            // Trigger when 1. Logos enters the viewport from below
-            const chaptersVisible = chapterLabels.length > 0 &&
-                chapterLabels[0].getBoundingClientRect().top <= window.innerHeight;
-
-            if (!chaptersVisible) {
-                entryScrollY = null;
-                chapterLabels.forEach((el, i) => {
-                    el.style.top = naturalTops[i] + 'px';
-                    el.style.bottom = (labelTargets[i] - TRAVEL) + 'px';
-                });
-                return;
-            }
-
-            // EXIT: when practicalWrapper bottom is inside the stacked label zone,
-            // slide all labels off together maintaining their spacing (same goose-file as entry)
-            const wrapperBottom = practicalWrapper.getBoundingClientRect().bottom;
-            const totalLabelH = navHeights.reduce((s, h) => s + h, 0);
-            if (wrapperBottom < sectionH + totalLabelH) {
-                let exitTop = wrapperBottom;
-                for (let i = chapterLabels.length - 1; i >= 0; i--) {
-                    exitTop -= navHeights[i];
-                    chapterLabels[i].style.top = exitTop + 'px';
-                    chapterLabels[i].style.bottom = '';
-                }
-                return;
-            }
-
-            // Restore natural tops in case we just left exit zone (scrolling back up)
-            chapterLabels.forEach((el, i) => {
-                el.style.top = naturalTops[i] + 'px';
-            });
-
-            if (entryScrollY === null) entryScrollY = window.scrollY;
-            const scrolled = window.scrollY - entryScrollY;
-
-            let currentIndex = -1;
-            chapterAnchors.forEach((anchor, i) => {
-                if (anchor.getBoundingClientRect().top <= window.innerHeight / 2) currentIndex = i;
-            });
-
-            chapterLabels.forEach((el, i) => {
-                if (i <= currentIndex) {
-                    el.style.bottom = '';
-                } else {
-                    // All labels move 1px per scroll px, same travel = constant spacing throughout
-                    el.style.bottom = Math.min(labelTargets[i] - TRAVEL + scrolled, labelTargets[i]) + 'px';
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateNav, { passive: true });
+        practicalLabel.querySelector('span').addEventListener('click', () => {
+            const targetTop = practicalBodyEl.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: targetTop - SECTION_LABEL_H(), behavior: 'smooth' });
+        });
 
         // ── CONTENT NAV ──
         const contentNavBlock = document.getElementById('content-nav-block');
         const contentBtn = document.getElementById('content-btn');
         const impressiumText = document.getElementById('impressium-text');
 
-        const scrollToEl = (labelEl, anchorEl) => {
-            const offset = parseInt(labelEl.style.top || '0') + labelEl.offsetHeight;
-            const top = anchorEl.getBoundingClientRect().top + window.scrollY - offset;
+        const scrollToEl = (labelEl, anchorEl, indent) => {
+            // Chapter rows: land the label just under the sticky section label.
+            // Section rows: land the body just under the sticky section label.
+            const target = indent ? labelEl : anchorEl;
+            const top = target.getBoundingClientRect().top + window.scrollY - SECTION_LABEL_H();
             window.scrollTo({ top, behavior: 'smooth' });
         };
 
@@ -1600,7 +1432,7 @@ null,
             const item = document.createElement('button');
             item.className = indent ? 'content-nav-item' : 'content-nav-section';
             item.textContent = label;
-            item.addEventListener('click', () => scrollToEl(labelEl, anchorEl));
+            item.addEventListener('click', () => scrollToEl(labelEl, anchorEl, indent));
             contentNavBlock.appendChild(item);
         });
 
